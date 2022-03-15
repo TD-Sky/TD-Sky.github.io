@@ -1,6 +1,6 @@
 +++
 title = "计算机组成原理：绪论"
-date = 2022-03-08
+date = 2022-03-02
 updated = 2022-03-13
 [taxonomies]
 categories = ["计算机组成原理"]
