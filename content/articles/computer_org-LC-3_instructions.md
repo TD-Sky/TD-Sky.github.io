@@ -1,7 +1,7 @@
 +++
 title = "LC-3的指令"
 date = 2022-03-12
-updated = 2022-03-13
+updated = 2022-03-16
 [taxonomies]
 categories = ["计算机组成原理"]
 +++
@@ -61,6 +61,8 @@ STR  |0 1 1 1| SR  |BaseR|   offset6    |
 
 TRAP |1 1 1 1| 0000|    trapvector8     |
 ```
+
+指令执行的数据路径值得反复斟酌。见书P174。
 
 ### 操作码 & 数据类型
 
