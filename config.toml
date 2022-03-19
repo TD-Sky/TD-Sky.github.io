@@ -3,8 +3,6 @@ title = "三维天空"
 # The URL the site will be built for
 base_url = "https://td-sky.github.io"
 
-default_language = "en"
-
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
 
@@ -32,7 +30,7 @@ smart_punctuation = false
 # Navbar
 menu = [
   { name = "主页", url = "/" },
-  { name = "文章", url = "/articles/" },
+  { name = "文章", url = "/posts/" },
   { name = "分类", url = "/categories/" },
   { name = "订阅", url = "/atom.xml/" },
 ]
