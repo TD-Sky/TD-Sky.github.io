@@ -32,7 +32,8 @@ smart_punctuation = false
 menu = [
   { name = "主页", url = "/" },
   { name = "文章", url = "/posts/" },
-  { name = "分类", url = "/categories/" },
+  { name = "目录", url = "/categories/" },
+  { name = "朋友", url = "/friends" },
   { name = "订阅", url = "/atom.xml" },
 ]
 # Avatar at homepage
