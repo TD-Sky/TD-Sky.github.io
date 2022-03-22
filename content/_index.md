@@ -6,3 +6,5 @@ title = "三维天空"
 
 🖄   E-mail：`three-dim-sky@foxmail.com`
 
+🕬   订阅：`https://td-sky.github.io/atom.xml`
+

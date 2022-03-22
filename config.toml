@@ -34,7 +34,6 @@ menu = [
   { name = "文章", url = "/posts/" },
   { name = "目录", url = "/categories/" },
   { name = "朋友", url = "/friends" },
-  { name = "订阅", url = "/atom.xml" },
 ]
 # Avatar at homepage
 avatar_url = "/img/profile.jpg"
