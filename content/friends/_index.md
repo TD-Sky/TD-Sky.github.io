@@ -10,3 +10,5 @@ title = "小伙伴们 😇"
 
 - [Sakunia](https://blog.sakunia.tk)
 
+- [ZhTSu](https://zhtsu.cn)
+
