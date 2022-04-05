@@ -12,3 +12,5 @@ title = "小伙伴们 😇"
 
 - [ZhTSu](https://zhtsu.cn)
 
+- [泥烟](https://knight-02.gitee.io)
+
