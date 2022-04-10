@@ -1,7 +1,7 @@
 +++
 title = "Rust智能引用"
 date = 2022-03-01
-updated = 2022-03-13
+updated = 2022-04-10
 [taxonomies]
 categories = ["Rust"]
 +++
@@ -15,9 +15,7 @@ categories = ["Rust"]
 
 
 
-## Deref
-
-> 修改版：`DerefMut`
+## Deref / DerefMut
 
 **Deref**的定义如下：
 
@@ -42,9 +40,7 @@ pub trait Deref {
 
 
 
-## AsRef
-
-> 修改版：`AsMut`
+## AsRef / AsMut
 
 ```rust
 pub trait AsRef<T>
@@ -61,9 +57,7 @@ where
 
 
 
-## Borrow
-
-> 修改版：`BorrowMut`
+## Borrow / BorrowMut
 
 ```rust
 pub trait Borrow<Borrowed> 
