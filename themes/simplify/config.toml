@@ -1,0 +1,44 @@
+# Main settings
+base_url = "https://simplify-zola.netlify.app/"
+title = "Simplify"
+description = "Simplify is a Zola theme built with simple.css"
+default_language = "en"
+
+# Build settings
+compile_sass = false
+build_search_index = false
+minify_html = false
+generate_feed = true
+
+# Taxonomy settings
+taxonomies = [
+    { name = "categories", feed = true },
+    { name = "tags", feed = true }
+]
+
+# Markdown settings
+[markdown]
+highlight_code = true
+highlight_theme = "agola-dark"
+render_emoji = true
+external_links_target_blank = true
+external_links_no_follow = false
+external_links_no_referrer = false
+smart_punctuation = false
+
+[extra]
+# Navbar
+menu = [
+    { name = "Home", url = "/" },
+    { name = "Blog", url = "/blog/" },
+    { name = "Tags", url = "/tags/" },
+    { name = "Categories", url = "/categories/" },
+    { name = "Feed", url = "/atom.xml/" },
+    { name = "Github", url = "https:/github.com/tarunjana" }
+]
+# Avatar at homepage
+avatar_url = "/img/profile.jpg"
+# Footer credit
+footer_credit = true
+# KaTex support
+math = false
