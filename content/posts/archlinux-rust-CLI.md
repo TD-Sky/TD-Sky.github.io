@@ -1,7 +1,7 @@
 +++
 title = "Rust命令行软件"
 date = 2022-04-25
-updated = 2022-05-05
+updated = 2022-07-20
 [taxonomies]
 categories = ["ArchLinux"]
 +++
@@ -53,10 +53,6 @@ categories = ["ArchLinux"]
     - `bandwhich`
     - 超级用户监控网络
 
-- **[grex](https://github.com/pemistahl/grex)**
-    - `grex`
-    - 从字符串生成正则模式
-
 - **[skim](https://github.com/lotabout/skim)**
     - `sk`
     - 模糊搜索
@@ -92,6 +88,22 @@ categories = ["ArchLinux"]
     - `viu`
     - 终端看图
 
+- **[jless](https://github.com/PaulJuliusMartinez/jless)**
+    - `jless`
+    - JSON阅读器
+
+- **[rust-script](https://github.com/fornwall/rust-script)**
+    - `rust-script`
+    - rust脚本解释器
+
+
+
+## archlinxcn
+
+- **[paru](https://github.com/Morganamilo/paru)**
+    - `paru`
+    - AUR Helper
+
 
 
 ## cargo
@@ -123,3 +135,12 @@ categories = ["ArchLinux"]
     - `macchina`
     - 一览系统信息
 
+- **[termusic](https://github.com/tramhao/termusic)**
+    - 包：*termusic*
+    - `termusic`
+    - 终端音乐播放器
+
+- **[didyoumean](https://github.com/hisbaan/didyoumean)**
+    - 包：*didyoumean-bin*
+    - `dym`
+    - 模糊查询印欧语系单词
