@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>Rust命令行软件 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>Rust命令行软件</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-04-25</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-rust-cli/#pacman">pacman</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-rust-cli/#archlinxcn">archlinxcn</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-rust-cli/#cargo">cargo</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-rust-cli/#aur">AUR</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="pacman">pacman</h2>
+<ul>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/BurntSushi/ripgrep">ripgrep</a></strong></p>
+<ul>
+<li><code>rg</code></li>
+<li>正则匹配行</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/sharkdp/fd">fd</a></strong></p>
+<ul>
+<li><code>fd</code></li>
+<li>文件搜索</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/ogham/exa">exa</a></strong></p>
+<ul>
+<li><code>exa</code></li>
+<li>列印目录文件</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/sharkdp/bat">bat</a></strong></p>
+<ul>
+<li><code>bat</code></li>
+<li>读取文件</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/dalance/procs">procs</a></strong></p>
+<ul>
+<li><code>procs</code></li>
+<li>进程查看</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/XAMPPRocky/tokei">tokei</a></strong></p>
+<ul>
+<li><code>tokei</code></li>
+<li>统计代码</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/ClementTsang/bottom">bottom</a></strong></p>
+<ul>
+<li><code>btm</code></li>
+<li>进程监视</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/Aloxaf/silicon">silicon</a></strong></p>
+<ul>
+<li><code>silicon</code></li>
+<li>代码截图</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/sharkdp/hyperfine">hyperfine</a></strong></p>
+<ul>
+<li><code>hyperfine</code></li>
+<li>程序竞速</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/bootandy/dust">dust</a></strong></p>
+<ul>
+<li><code>dust</code></li>
+<li>统计磁盘空间</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/imsnif/bandwhich">bandwhich</a></strong></p>
+<ul>
+<li><code>bandwhich</code></li>
+<li>超级用户监控网络</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/lotabout/skim">skim</a></strong></p>
+<ul>
+<li><code>sk</code></li>
+<li>模糊搜索</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/starship/starship">starship</a></strong></p>
+<ul>
+<li>定制提示符</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/nushell/nushell/">nushell</a></strong></p>
+<ul>
+<li><code>nu</code></li>
+<li>SQL式shell</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/zellij-org/zellij">zellij</a></strong></p>
+<ul>
+<li><code>zellij</code></li>
+<li>终端复用器</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/theryangeary/choose">choose</a></strong></p>
+<ul>
+<li><code>choose</code></li>
+<li>字段分割</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/chmln/sd">sd</a></strong></p>
+<ul>
+<li><code>sd</code></li>
+<li>搜索替换</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/cantino/mcfly">mcfly</a></strong></p>
+<ul>
+<li><code>^r</code></li>
+<li>历史命令</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/Nukesor/pueue">pueue</a></strong></p>
+<ul>
+<li><code>pueue</code></li>
+<li>守护大任务</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/atanunq/viu">viu</a></strong></p>
+<ul>
+<li><code>viu</code></li>
+<li>终端看图</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/PaulJuliusMartinez/jless">jless</a></strong></p>
+<ul>
+<li><code>jless</code></li>
+<li>JSON阅读器</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/fornwall/rust-script">rust-script</a></strong></p>
+<ul>
+<li><code>rust-script</code></li>
+<li>rust脚本解释器</li>
+</ul>
+</li>
+</ul>
+<h2 id="archlinxcn">archlinxcn</h2>
+<ul>
+<li><strong><a rel="noopener" target="_blank" href="https://github.com/Morganamilo/paru">paru</a></strong>
+<ul>
+<li><code>paru</code></li>
+<li>AUR Helper</li>
+</ul>
+</li>
+</ul>
+<h2 id="cargo">cargo</h2>
+<ul>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/nivekuil/rip">rip</a></strong></p>
+<ul>
+<li>包：<em>rm-improved</em></li>
+<li><code>rip</code></li>
+<li>回收式移除目录文件</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/wtklbm/crm">crm</a></strong></p>
+<ul>
+<li><code>crm</code></li>
+<li>管理cargo镜像源</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/probablykasper/cpc">cpc</a></strong></p>
+<ul>
+<li><code>cpc</code></li>
+<li>单位制(可选)数学运算</li>
+</ul>
+</li>
+</ul>
+<h2 id="aur">AUR</h2>
+<ul>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/Schniz/fnm">fnm</a></strong></p>
+<ul>
+<li>包：<em>fnm-bin</em></li>
+<li><code>fnm</code></li>
+<li>管理node.js工具链</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/Macchina-CLI/macchina">macchina</a></strong></p>
+<ul>
+<li>包：<em>macchina-bin</em></li>
+<li><code>macchina</code></li>
+<li>一览系统信息</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/tramhao/termusic">termusic</a></strong></p>
+<ul>
+<li>包：<em>termusic</em></li>
+<li><code>termusic</code></li>
+<li>终端音乐播放器</li>
+</ul>
+</li>
+<li>
+<p><strong><a rel="noopener" target="_blank" href="https://github.com/hisbaan/didyoumean">didyoumean</a></strong></p>
+<ul>
+<li>包：<em>didyoumean-bin</em></li>
+<li><code>dym</code></li>
+<li>模糊查询印欧语系单词</li>
+</ul>
+</li>
+</ul>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

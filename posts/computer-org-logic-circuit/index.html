@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>逻辑电路 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>逻辑电路</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-03-11</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#jing-ti-guan">晶体管</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#luo-ji-men">逻辑门</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#duo-xian-lu-qie-pian-ji-fa">多线路切片记法</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#zu-he-luo-ji-dian-lu">组合逻辑电路</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#jie-ma-qi">解码器</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#duo-lu-fu-yong-qi">多路复用器</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#1wei-jia-fa-qi">1位加法器</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#ke-bian-cheng-luo-ji-zhen-lie-pla">可编程逻辑阵列(PLA)</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#luo-ji-wan-bei">逻辑完备</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#qia-nuo-tu">卡诺图</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#shi-xu-luo-ji-dian-lu">时序逻辑电路</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#cun-chu-dan-yuan">存储单元</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#you-xian-zhuang-tai-ji">有限状态机</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#nei-cun">内存</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#zui-xiao-qu-zhi-duan-yu-di-zhi-kong-jian">最小取址段与地址空间</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#nei-cun-mo-xing">内存模型</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-logic-circuit/#shu-ju-lu-jing">数据路径</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="jing-ti-guan">晶体管</h2>
+<p>CPU中译<strong>中央处理器</strong>，是计算机的核心。如今，<strong>微处理器</strong>担任此职责，而它由数片大规模集成电路组成。集成电路的最小单元是逻辑门，后者由晶体管搭建。</p>
+<p>现代晶体管称为<strong>MOS晶体管</strong>，“MOS”是<strong>Metal-oxide semiconductor</strong>的缩写，即“金属氧化物半导体”。</p>
+<p>MOS晶体结构为：<strong>门</strong>、<strong>源极</strong>、<strong>漏极</strong>，分为P/N两类。两者源极和漏极的位置不同，门结构也不同。同时包含两者的集成电路称为<strong>CMOS电路</strong>，其中“C”是<strong>Complementary</strong>。</p>
+<p>若向N类晶体管的门供电<strong>1.2V</strong>，源极至漏极连通；供电<strong>0V</strong>，源极与漏极形成<strong>断路</strong>。若向P类晶体管的门供电<strong>0V</strong>，源极至漏极连通；供电<strong>1.2V</strong>，源极与漏极形成<strong>断路</strong>。</p>
+<p>不可让P类晶体管源极<strong>接地</strong>，亦不可给N类晶体管源极接1.2V电压，如此将导致晶体管内部产生“传输电压”，大约<strong>0.5V</strong>。</p>
+<h2 id="luo-ji-men">逻辑门</h2>
+<p>逻辑门皆为CMOS。</p>
+<p>构造上：</p>
+<ul>
+<li>反相器</li>
+<li>或非门；或门 = 或非门 + 非门</li>
+<li>与非门；与门 = 与非门 + 非门</li>
+</ul>
+<h2 id="duo-xian-lu-qie-pian-ji-fa">多线路切片记法</h2>
+<p>当你需要<strong>集合</strong>涵盖多条线路时，先为线路编号，则有：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>S[High:Low]
+</span></code></pre>
+<p>针对全部线路，表示为<code>S[最高编号:0]</code>；假如我想表示第0到第2根线路，写作<code>S[2:0]</code>。</p>
+<p>注意切片只能表示<strong>连续部分</strong>；线路数量是<code>High - Low + 1</code>。</p>
+<h2 id="zu-he-luo-ji-dian-lu">组合逻辑电路</h2>
+<p>状态转变仅取决于输入。</p>
+<h3 id="jie-ma-qi">解码器</h3>
+<p><strong>断言</strong>输入模式。有且仅有一个输出端为1，其余为0。</p>
+<p>输出端数量 output(n) = 2<sup>n</sup>，n为输入端数量</p>
+<h3 id="duo-lu-fu-yong-qi">多路复用器</h3>
+<p>通过操纵<strong>选择线路</strong>S[High:Low]，放行一个输入端。仅有一个输出端。</p>
+<p>选择线路S逐个跟输入端以某种方式做<strong>与</strong>运算，运算结果汇聚做<strong>或</strong>运算。</p>
+<p>选择线路数量 select_line(n) = 2<sup>n</sup>，n为输入端数量</p>
+<h3 id="1wei-jia-fa-qi">1位加法器</h3>
+<p>输入端分别是两个因子及<strong>上一进位</strong>；输出端分别是“和”与“进位”。</p>
+<p>单个加法器作用不大，需要多个组合使用，方案有：串行、并行、超前进位。</p>
+<p><strong>组合加法器</strong>的起始加法器要给予进位输入端<strong>0</strong>。这样的1位加法器又称<strong>半加器</strong>；相对于此，则称<strong>全加器</strong>。</p>
+<h3 id="ke-bian-cheng-luo-ji-zhen-lie-pla">可编程逻辑阵列(PLA)</h3>
+<p>通用的逻辑函数实现块。</p>
+<p>PLA靠解码器断言输入信息，经过编程的逻辑函数计算，再通过多端输出。</p>
+<p>输出端的数量取决于所设计逻辑函数的数量，即真值表的<strong>输出列</strong>有多少。</p>
+<h3 id="luo-ji-wan-bei">逻辑完备</h3>
+<p>指定一组逻辑门，若基于此的逻辑电路可以实现任何逻辑函数，则称此组逻辑门完备，即<strong>逻辑完备</strong>。</p>
+<p>经典的完备：{AND, OR, NOT}</p>
+<h2 id="qia-nuo-tu">卡诺图</h2>
+<p>用于简化<strong>布尔函数</strong>，本质是布尔运算的<strong>加法结合律</strong>和<code>A + A' = 1</code>。</p>
+<h2 id="shi-xu-luo-ji-dian-lu">时序逻辑电路</h2>
+<p>状态转变取决于输入和当前状态。</p>
+<p>时序逻辑电路分为<strong>组合逻辑电路</strong>和<strong>存储单元</strong>两部分。</p>
+<h3 id="cun-chu-dan-yuan">存储单元</h3>
+<p>最基础的存储单元是R-S锁存器，通过组合，它可升级为功能更强大的存储单元。迭代升级之目的是消除未定义行为。</p>
+<h4 id="r-ssuo-cun-qi">R-S锁存器</h4>
+<p>S乃<strong>Set</strong>，R乃<strong>Reset</strong>。此单元包含两个互异的输出端，视与S并排的输出端为正。</p>
+<p>常见的R-S锁存器基于<strong>与非门</strong>，低电平置1。</p>
+<p>特征表：</p>
+<table><thead><tr><th style="text-align: center">Q<sub>n</sub></th><th style="text-align: center">S</th><th style="text-align: center">R</th><th style="text-align: center">Q<sub>n+1</sub></th></tr></thead><tbody>
+<tr><td style="text-align: center">X</td><td style="text-align: center">1</td><td style="text-align: center">0</td><td style="text-align: center">0</td></tr>
+<tr><td style="text-align: center">X</td><td style="text-align: center">0</td><td style="text-align: center">1</td><td style="text-align: center">1</td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">1</td><td style="text-align: center">1</td><td style="text-align: center">1</td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">1</td><td style="text-align: center">1</td><td style="text-align: center">0</td></tr>
+<tr><td style="text-align: center">X</td><td style="text-align: center">0</td><td style="text-align: center">0</td><td style="text-align: center">?</td></tr>
+</tbody></table>
+<p>输入皆为0是<strong>未定义</strong>行为，取决于晶体管的电器性质。</p>
+<p>特征方程：</p>
+<ul>
+<li>S + R = 1</li>
+<li>Q<sub>n+1</sub> = S' + SRQ<sub>n</sub></li>
+</ul>
+<h4 id="dsuo-cun-qi">D锁存器</h4>
+<p>基于上述R-S锁存器。此单元的输入有：D端，用于改变状态；WE端，即<strong>Write Enable</strong>，控制锁存。在时序逻辑电路中，WE端连接时钟。</p>
+<p>特征表：</p>
+<table><thead><tr><th style="text-align: center">Q<sub>n</sub></th><th style="text-align: center">D</th><th style="text-align: center">Q<sub>n+1</sub></th></tr></thead><tbody>
+<tr><td style="text-align: center">0</td><td style="text-align: center">0</td><td style="text-align: center">0</td></tr>
+<tr><td style="text-align: center">0</td><td style="text-align: center">1</td><td style="text-align: center">1</td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">0</td><td style="text-align: center">0</td></tr>
+<tr><td style="text-align: center">1</td><td style="text-align: center">1</td><td style="text-align: center">1</td></tr>
+</tbody></table>
+<p>特征方程：Q<sub>n+1</sub> = D'</p>
+<h3 id="you-xian-zhuang-tai-ji">有限状态机</h3>
+<p>状态持续转变的系统，且满足以下条件：</p>
+<ul>
+<li>状态数量有限</li>
+<li>外部输入数有限</li>
+<li>外部输出数有限</li>
+<li>精确定义所有状态转变</li>
+<li>精确定义决定外部输出的方式</li>
+</ul>
+<p>有限状态机可用时序电路实现，以时钟信号驱动状态转变。</p>
+<h4 id="yi-bu-shi-xu-dian-lu">异步时序电路</h4>
+<p>电路各储存单元不由统一时钟信号驱动。</p>
+<h4 id="tong-bu-shi-xu-dian-lu">同步时序电路</h4>
+<p>电路各存储单元由统一时钟信号驱动，状态转变具备<strong>周期性</strong>。</p>
+<blockquote>
+<p>引例：D锁存器的缺陷 -&gt; P90</p>
+<p>假如使用D锁存器作为有限时序电路的存储单元，因为电路需要将状态作为组合电路部分的输入，所以状态转变时，输入随之转变，电路陷入未定义状况。</p>
+<p>将输入更新推迟到锁存态可解决此问题，<strong>主从触发器</strong>应运而生。</p>
+</blockquote>
+<h2 id="nei-cun">内存</h2>
+<p>内存拥有若干有地址的位置，每个位置存有值。</p>
+<h3 id="zui-xiao-qu-zhi-duan-yu-di-zhi-kong-jian">最小取址段与地址空间</h3>
+<p>最小取址段(Addressabiliy)是位置的空间大小。</p>
+<p>例如，常见的计算机<strong>按字节取址</strong>，因为早年计算机接受键盘输入，就依靠8位的ASCII码传递，按字节取址易于修改内存中的信息。</p>
+<p>再比如，科学计算电脑<strong>按64位取址</strong>，因为它们大量使用64位浮点数。</p>
+<p>地址空间就是位置的数量。如果内存为2G，最小取址段为8位，那么地址空间就是2 × 2<sup>30</sup>。</p>
+<h3 id="nei-cun-mo-xing">内存模型</h3>
+<p>命名格式是<strong>地址空间-按-最小取址段</strong>。例如，2<sup>2</sup>-by-3-bit。</p>
+<p>给定地址输入解码器，断言到<strong>字行</strong>。我理解的<strong>字</strong>(word)就是最小取址段。解码输出作为选择总线，同列所有储存单元的状态汇聚到一个MUX，输出结果就是地址所指位置之值的某比特位，最终所有这些比特位合成目标值。</p>
+<h2 id="shu-ju-lu-jing">数据路径</h2>
+<p>计算机核心的全部逻辑元件组合形成数据路径。</p>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

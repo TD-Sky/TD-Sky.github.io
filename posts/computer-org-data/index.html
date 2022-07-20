@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>计算机组成原理：数据 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>计算机组成原理：数据</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-03-03</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-data/#er-jin-zhi">二进制</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-data/#jin-zhi-zhuan-huan">进制转换</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-data/#dian-ya-bian-ma">电压编码</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-data/#wei-shi-liang">位矢量</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-data/#shu-ju-lei-xing">数据类型</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-data/#shu-zi-lei-xing">数字类型</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-data/#asciima">ASCII码</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-data/#wei-cao-zuo">位操作</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-data/#suan-zhu">算术</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-data/#luo-ji-cao-zuo">逻辑操作</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="er-jin-zhi">二进制</h2>
+<h3 id="jin-zhi-zhuan-huan">进制转换</h3>
+<ul>
+<li>十进制 -&gt; 二进制：除2取余，逆序排列</li>
+<li>二进制 -&gt; 十进制：二进制扩展表示法</li>
+</ul>
+<h3 id="dian-ya-bian-ma">电压编码</h3>
+<p>逻辑电路难以精确测量某处电压，它定义接近0的电压为<strong>0</strong>，而远离0的电压为<strong>1</strong>。</p>
+<h3 id="wei-shi-liang">位矢量</h3>
+<p>各位意义相互独立的二进制码。</p>
+<p>位矢量可用作<strong>掩码</strong>。</p>
+<p>例如，整数为奇则二进制末位为1，整数为偶则二进制末位为0。令其按位与仅末位为1的掩码，根据结果可判断其奇偶性。</p>
+<p>再如，有符号整数<strong>按位与</strong>仅首位为1的掩码，根据结果可判断其是否为负。</p>
+<p>这个判断方式是什么呢？因为计算机非常“笨”，它事先准备好所有可能的二进制码，待结果得出后比较是否相等。</p>
+<h2 id="shu-ju-lei-xing">数据类型</h2>
+<p>A particular representation is <strong>data type</strong> if there are operations in the computer that can operate on information that is encoded in that representation.</p>
+<h3 id="shu-zi-lei-xing">数字类型</h3>
+<p>下文整数默认为<strong>十进制</strong>。</p>
+<h4 id="wu-fu-hao-zheng-shu">无符号整数</h4>
+<p>即非负整数，“无符号”意即没有<strong>符号位</strong>存放<code>-</code>信息。</p>
+<p>其编码方式为，整数按升序映射到二进制数。</p>
+<h4 id="you-fu-hao-zheng-shu">有符号整数</h4>
+<h5 id="2de-bu-ma-biao-shi-fa">2的补码表示法</h5>
+<p>有符号整数的表示法颇多。其中，<strong>2的补码表示法</strong>在运算上<strong>互洽</strong>，即二进制数与整数的<strong>算术操作</strong>呈双射。它能最简化逻辑电路设计，因此被广泛采用。</p>
+<p>示例，<code>[00000, 11111] &lt;-&gt; [-16, 15]</code>：</p>
+<table><thead><tr><th style="text-align: right">二进制数</th><th style="text-align: right">有符号整数</th></tr></thead><tbody>
+<tr><td style="text-align: right">00000</td><td style="text-align: right">0</td></tr>
+<tr><td style="text-align: right">00001</td><td style="text-align: right">1</td></tr>
+<tr><td style="text-align: right">00010</td><td style="text-align: right">2</td></tr>
+<tr><td style="text-align: right">00011</td><td style="text-align: right">3</td></tr>
+<tr><td style="text-align: right">00100</td><td style="text-align: right">4</td></tr>
+<tr><td style="text-align: right">00101</td><td style="text-align: right">5</td></tr>
+<tr><td style="text-align: right">00110</td><td style="text-align: right">6</td></tr>
+<tr><td style="text-align: right">00111</td><td style="text-align: right">7</td></tr>
+<tr><td style="text-align: right">01000</td><td style="text-align: right">8</td></tr>
+<tr><td style="text-align: right">01001</td><td style="text-align: right">9</td></tr>
+<tr><td style="text-align: right">01010</td><td style="text-align: right">10</td></tr>
+<tr><td style="text-align: right">01011</td><td style="text-align: right">11</td></tr>
+<tr><td style="text-align: right">01100</td><td style="text-align: right">12</td></tr>
+<tr><td style="text-align: right">01101</td><td style="text-align: right">13</td></tr>
+<tr><td style="text-align: right">01110</td><td style="text-align: right">14</td></tr>
+<tr><td style="text-align: right">01111</td><td style="text-align: right">15</td></tr>
+<tr><td style="text-align: right">10000</td><td style="text-align: right">-16</td></tr>
+<tr><td style="text-align: right">10001</td><td style="text-align: right">-15</td></tr>
+<tr><td style="text-align: right">10010</td><td style="text-align: right">-14</td></tr>
+<tr><td style="text-align: right">10011</td><td style="text-align: right">-13</td></tr>
+<tr><td style="text-align: right">10100</td><td style="text-align: right">-12</td></tr>
+<tr><td style="text-align: right">10101</td><td style="text-align: right">-11</td></tr>
+<tr><td style="text-align: right">10110</td><td style="text-align: right">-10</td></tr>
+<tr><td style="text-align: right">10111</td><td style="text-align: right">-9</td></tr>
+<tr><td style="text-align: right">11000</td><td style="text-align: right">-8</td></tr>
+<tr><td style="text-align: right">11001</td><td style="text-align: right">-7</td></tr>
+<tr><td style="text-align: right">11010</td><td style="text-align: right">-6</td></tr>
+<tr><td style="text-align: right">11011</td><td style="text-align: right">-5</td></tr>
+<tr><td style="text-align: right">11100</td><td style="text-align: right">-4</td></tr>
+<tr><td style="text-align: right">11101</td><td style="text-align: right">-3</td></tr>
+<tr><td style="text-align: right">11110</td><td style="text-align: right">-2</td></tr>
+<tr><td style="text-align: right">11111</td><td style="text-align: right">-1</td></tr>
+</tbody></table>
+<p>表示法递推公式：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>B(0) = 0b0
+</span><span>B(1) = 0b1
+</span><span>B(d + 1) = B(d) + B(1)
+</span></code></pre>
+<p>正负转换公式：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>-B = !B + B(1)
+</span></code></pre>
+<h5 id="fu-hao-yan-zhan">符号延展</h5>
+<p>符号位为0，前添0；符号位为1，前添1。</p>
+<p>常用于两<strong>表示长度</strong>不一致的整数之运算。缩写<strong>SEXT</strong>。</p>
+<h5 id="shang-yi">上溢</h5>
+<p>数字运算进位上溢将污染符号位，故运算超出当前表示法范围是<strong>错误</strong>。</p>
+<h4 id="fu-dian-shu">浮点数</h4>
+<p>浮点数牺牲精确度，以表示极大数和极小数。</p>
+<p>32位浮点数布局，字段皆为二进制：</p>
+<table><thead><tr><th style="text-align: center">1</th><th style="text-align: center">8</th><th style="text-align: center">23</th></tr></thead><tbody>
+<tr><td style="text-align: center">sign</td><td style="text-align: center">exponent</td><td style="text-align: center">fraction</td></tr>
+</tbody></table>
+<h5 id="gui-fan-xing-shi">规范形式</h5>
+<p>f<sub>32</sub> = (-1)<sup>sign</sup> × 1.fraction × 2<sup>exponent-127</sup> ，exponent ∈ [0b1, 11111110]</p>
+<p>有23个小数位，其取值范围涵盖<strong>0b0</strong>，故规范形式的科学计数法之<strong>整数位</strong>为1。因此，32位浮点数具备24位精确度。</p>
+<p>指数(exponent)需要减去<strong>偏置</strong>(bias)得出偏置指数。32位浮点数的偏置为127，64位浮点数的偏置为1023。偏置指数的范围与8位有符号整数相似，但为什么不直接用后者作为指数？见<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/IEEE_754-1985">IEEE 754-1985</a>相关段落：</p>
+<blockquote>
+<p>IEEE 754 adds a bias to the exponent so that numbers can in many cases be compared conveniently by the same hardware that compares signed 2's-complement integers. Using a biased exponent, the lesser of two positive floating-point numbers will come out &quot;less than&quot; the greater following the same ordering as for sign and magnitude integers. If two floating-point numbers have different signs, the sign-and-magnitude comparison also works with biased exponents. However, if both biased-exponent floating-point numbers are negative, then the ordering must be reversed. If the exponent were represented as, say, a 2's-complement number, comparison to see which of two numbers is greater would not be as convenient.</p>
+</blockquote>
+<h5 id="0">〇</h5>
+<table><thead><tr><th style="text-align: center">1</th><th style="text-align: center">8</th><th style="text-align: center">23</th></tr></thead><tbody>
+<tr><td style="text-align: center">sign</td><td style="text-align: center">00000000</td><td style="text-align: center">00⋯⋯⋯⋯00</td></tr>
+</tbody></table>
+<p>符号位决定〇的正负。</p>
+<h5 id="wu-qiong">无穷</h5>
+<p><code>exponent = 11111111</code> 用于定义无穷：</p>
+<table><thead><tr><th style="text-align: center">1</th><th style="text-align: center">8</th><th style="text-align: center">23</th></tr></thead><tbody>
+<tr><td style="text-align: center">sign</td><td style="text-align: center">11111111</td><td style="text-align: center">00⋯⋯⋯⋯00</td></tr>
+</tbody></table>
+<h5 id="yi-chang-xing-shi">异常形式</h5>
+<p>由<code>exponent = 00000000</code>定义，用于表示区间(0, 2<sup>-126</sup>)内的<strong>极小数</strong>：</p>
+<table><thead><tr><th style="text-align: center">1</th><th style="text-align: center">8</th><th style="text-align: center">23</th></tr></thead><tbody>
+<tr><td style="text-align: center">sign</td><td style="text-align: center">00000000</td><td style="text-align: center">fraction</td></tr>
+</tbody></table>
+<p>f<sub>32</sub> = (-1)<sup>sign</sup> × 0.fraction × 2<sup>-126</sup></p>
+<h3 id="asciima">ASCII码</h3>
+<p>键盘上每个键都有唯一的ASCII码，Shift切换状态也算。</p>
+<h2 id="wei-cao-zuo">位操作</h2>
+<h3 id="suan-zhu">算术</h3>
+<ul>
+<li>加法</li>
+<li>B<sub>1</sub> - B<sub>2</sub> = B<sub>1</sub> + (-B<sub>2</sub>)</li>
+<li>2 * B = B &lt;&lt; 1 —— 2乘以整数的二进制扩展形式，使每一扩展位的2指数加一，即二进制数整体左移。</li>
+</ul>
+<h3 id="luo-ji-cao-zuo">逻辑操作</h3>
+<ul>
+<li>AND | 与：<code>&amp;</code></li>
+<li>OR | 或：<code>|</code></li>
+<li>NOT | 非：<code>!</code></li>
+<li>Exclusive-OR | XOR | 异或：<code>^</code> —— 两输入互异时才输出1</li>
+</ul>
+<p>De Morgan律</p>
+<ul>
+<li><code>!(x &amp; y) = !x | !y</code></li>
+<li><code>!(x | y) = !x &amp; !y</code></li>
+</ul>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

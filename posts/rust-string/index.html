@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>Rust的字符串 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>Rust的字符串</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-02-01</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-string/#ding-yi-yu-shi-xian">定义与实现</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-string/#cru-he-shi-yong-zi-fu-chuan">C如何使用字符串</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-string/#zhi-zhen-he-yin-yong">指针和引用</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-string/#rustru-he-shi-yong-zi-fu-chuan">Rust如何使用字符串</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="ding-yi-yu-shi-xian">定义与实现</h2>
+<ul>
+<li>字符串是可翻译为一系列字符的字节序列，如何翻译取决于编码。</li>
+<li>为使用字符串，必须知道其<strong>字节序列</strong>在内存上的开始和结束位置。</li>
+<li>编程语言围绕字符串构建了各种数据结构，用于存储或获取字符串的某些属性，并添加额外功能以方便地操作字符串。</li>
+</ul>
+<h2 id="cru-he-shi-yong-zi-fu-chuan">C如何使用字符串</h2>
+<p><strong>C不规定字符串编码</strong>。C通过<strong>字符指针</strong>使用字符串，其置<code>\0</code>于字符串末尾以示终止。</p>
+<pre data-lang="c" style="background-color:#fafafa;color:#383a42;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#a0a1a7;">// 栈上可修改字符串
+</span><span style="color:#a626a4;">char</span><span> stack_string[] </span><span style="color:#a626a4;">= </span><span style="color:#50a14f;">&quot;banana&quot;</span><span>;
+</span><span style="color:#a0a1a7;">// 等价于
+</span><span style="color:#a626a4;">char</span><span> s_array[] </span><span style="color:#a626a4;">= </span><span>{</span><span style="color:#50a14f;">&#39;b&#39;</span><span>, </span><span style="color:#50a14f;">&#39;a&#39;</span><span>, </span><span style="color:#50a14f;">&#39;n&#39;</span><span>, </span><span style="color:#50a14f;">&#39;a&#39;</span><span>, </span><span style="color:#50a14f;">&#39;n&#39;</span><span>, </span><span style="color:#50a14f;">&#39;a&#39;</span><span>, </span><span style="color:#50a14f;">&#39;</span><span style="color:#0997b3;">\0</span><span style="color:#50a14f;">&#39;</span><span>};
+</span><span>
+</span><span style="color:#a0a1a7;">// 字符串字面值
+</span><span style="color:#a626a4;">const char*</span><span> string_literal </span><span style="color:#a626a4;">= </span><span style="color:#50a14f;">&quot;banana&quot;</span><span>;
+</span><span>
+</span><span style="color:#a0a1a7;">// 堆上可修改字符串
+</span><span style="color:#a626a4;">char*</span><span> heap_string </span><span style="color:#a626a4;">= </span><span>(</span><span style="color:#a626a4;">char*</span><span>) </span><span style="color:#0184bc;">malloc</span><span>(</span><span style="color:#c18401;">7</span><span style="color:#a626a4;">*sizeof</span><span>(</span><span style="color:#a626a4;">char</span><span>));
+</span></code></pre>
+<h2 id="zhi-zhen-he-yin-yong">指针和引用</h2>
+<p><strong>指针</strong>类型实质为<code>usize</code>，因市面上64位处理器居多，故其常占<strong>8字节</strong>。</p>
+<p><strong>切片引用</strong>具备<strong>地址</strong>和<strong>长度</strong>两道信息，占<strong>16字节</strong>。而普通引用仅表示有效地址，占<strong>8字节</strong>。</p>
+<h2 id="rustru-he-shi-yong-zi-fu-chuan">Rust如何使用字符串</h2>
+<ul>
+<li>
+<p><code>str</code>：表示可字符化数据的<strong>切片</strong>，没有地址和长度信息。</p>
+</li>
+<li>
+<p><code>&amp;str</code>：<code>str</code>之引用，只读。俗称“字符串切片”，但精确定义应为<strong>字符串切片之引用</strong>。</p>
+</li>
+<li>
+<p><code>&amp;'static str</code>：<strong>字符串字面值</strong>，编译期会硬编码至二进制文件。</p>
+</li>
+<li>
+<p><code>&amp;mut str</code>：堆上字符串切片之引用，允许<strong>有限</strong>修改切片内容。</p>
+</li>
+<li>
+<p><code>String</code>：堆上字符串，实质为<code>Vec&lt;u8&gt;</code>的<strong>包装类型</strong>。<code>capacity</code>字段记录着空闲空间的大小，内部<strong>字节数</strong>超过它时就翻倍。</p>
+</li>
+<li>
+<p><code>Box&lt;str&gt;</code></p>
+</li>
+<li>
+<p><code>CStr</code></p>
+</li>
+<li>
+<p><code>CString</code></p>
+</li>
+</ul>
+<blockquote>
+<p>参考文章</p>
+<p><a rel="noopener" target="_blank" href="https://medium.com/@alisomay/strings-in-rust-28c08a2d3130">Ali Somay - Strings in Rust</a></p>
+</blockquote>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

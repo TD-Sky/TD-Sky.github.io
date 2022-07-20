@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>Rust智能引用 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>Rust智能引用</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-03-01</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-smart-reference/#mo-kuai-fen-lei">模块分类</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-smart-reference/#deref-derefmut">Deref &#x2F; DerefMut</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-smart-reference/#asref-asmut">AsRef &#x2F; AsMut</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-smart-reference/#borrow-borrowmut">Borrow &#x2F; BorrowMut</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-smart-reference/#cow">Cow</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="mo-kuai-fen-lei">模块分类</h2>
+<ul>
+<li><code>std::ops::Deref</code></li>
+<li><code>std::convert::AsRef</code></li>
+<li><code>std::borrow::Borrow</code></li>
+<li><code>std::borrow::Cow</code></li>
+</ul>
+<h2 id="deref-derefmut">Deref / DerefMut</h2>
+<p><strong>Deref</strong>的定义如下：</p>
+<pre data-lang="rust" style="background-color:#fafafa;color:#383a42;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#a626a4;">pub trait </span><span>Deref {
+</span><span>    </span><span style="color:#a626a4;">type </span><span>Target: </span><span style="color:#a626a4;">?</span><span>Sized;
+</span><span>    </span><span style="color:#a626a4;">fn </span><span style="color:#0184bc;">deref</span><span>(</span><span style="color:#a626a4;">&amp;</span><span style="color:#e45649;">self</span><span>) -&gt; </span><span style="color:#a626a4;">&amp;Self::</span><span>Target;
+</span><span>}
+</span></code></pre>
+<p><code>deref</code>是一个被隐式调用的方法，官方称作<strong>deref强转</strong>。</p>
+<p>比如，操作<code>Box&lt;T&gt;</code>，无需手动解引用取出内容，而是当其外层透明，直接来操作<code>T</code>即可。</p>
+<p>再比如，类型为<code>&amp;str</code>的形参可以接收<code>&amp;String</code>，正是因为<code>String</code>实现了<code>Deref&lt;Target = str&gt;</code>。</p>
+<p>如果<code>T</code>实现了<code>Deref&lt;Target = U&gt;</code>，并且<code>x</code>是类型T的一个实例，那么：</p>
+<ul>
+<li>在不可变的上下文中，<code>*x</code>（此时T既不是引用也不是原始指针）操作等价于<code>*Deref::deref(&amp;x)</code>。</li>
+<li><code>&amp;T</code>的值会强制转换为<code>&amp;U</code>的值。</li>
+<li>相当于<code>T</code>实现了<code>U</code>的所有（不可变）方法。比如，<code>Vec&lt;T&gt;</code>通过实现<code>Deref&lt;Target = [T]&gt;</code>而共享了<strong>切片</strong>的所有方法。</li>
+</ul>
+<h2 id="asref-asmut">AsRef / AsMut</h2>
+<pre data-lang="rust" style="background-color:#fafafa;color:#383a42;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#a626a4;">pub trait </span><span>AsRef&lt;T&gt;
+</span><span>where
+</span><span>    T: ?Sized,
+</span><span>{
+</span><span>    </span><span style="color:#a626a4;">fn </span><span style="color:#0184bc;">as_ref</span><span>(</span><span style="color:#a626a4;">&amp;</span><span style="color:#e45649;">self</span><span>) -&gt; </span><span style="color:#a626a4;">&amp;</span><span>T;
+</span><span>}
+</span></code></pre>
+<p><code>as_ref</code>用于通过引用的显式类型转换。</p>
+<p>比如，<code>String</code>实现了<code>AsRef&lt;str&gt;</code>，能够显式转换。</p>
+<h2 id="borrow-borrowmut">Borrow / BorrowMut</h2>
+<pre data-lang="rust" style="background-color:#fafafa;color:#383a42;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#a626a4;">pub trait </span><span>Borrow&lt;Borrowed&gt; 
+</span><span>where
+</span><span>    Borrowed: ?Sized, 
+</span><span>{
+</span><span>    </span><span style="color:#a626a4;">fn </span><span style="color:#0184bc;">borrow</span><span>(</span><span style="color:#a626a4;">&amp;</span><span style="color:#e45649;">self</span><span>) -&gt; </span><span style="color:#a626a4;">&amp;</span><span>Borrowed;
+</span><span>}
+</span></code></pre>
+<p><code>Borrow</code>是用来表示<strong>借用数据</strong>。Rust一贯会为不同语义提供不同类型的表示。</p>
+<p><code>Borrow</code>的适用场景：</p>
+<ul>
+<li>
+<p>统一抽象不同类型的借用。</p>
+</li>
+<li>
+<p>建立一个数据结构，它以同等方式处理<strong>自拥有值</strong>和<strong>借用值</strong>。例如<code>hash</code>和<code>cmp</code>。包装出来长这样：</p>
+</li>
+</ul>
+<pre data-lang="rust" style="background-color:#fafafa;color:#383a42;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#a626a4;">fn </span><span style="color:#0184bc;">get</span><span>&lt;Q&gt;(</span><span style="color:#a626a4;">&amp;</span><span style="color:#e45649;">self</span><span>, </span><span style="color:#e45649;">key</span><span>: </span><span style="color:#a626a4;">&amp;</span><span>Q) -&gt; Option&lt;</span><span style="color:#a626a4;">&amp;</span><span>V&gt;
+</span><span style="color:#a626a4;">where
+</span><span>    K: Borrow&lt;Q&gt;,
+</span><span>    Q: Hash + Eq + ?Sized
+</span><span>{
+</span><span>    </span><span style="color:#a0a1a7;">// ...
+</span><span>}
+</span></code></pre>
+<h2 id="cow">Cow</h2>
+<p>写时复制（Copy On Write）：大部分业务场景读多写少，利用<code>Cow</code>，仅在首次<strong>写</strong>的时候才复制对象，大大减少了复制次数。</p>
+<pre data-lang="rust" style="background-color:#fafafa;color:#383a42;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#a626a4;">pub enum </span><span>Cow&lt;&#39;a, B&gt;
+</span><span>where
+</span><span>    B: &#39;a + ToOwned + ?Sized,
+</span><span> {
+</span><span>    Borrowed(</span><span style="color:#a626a4;">&amp;&#39;a</span><span> B),
+</span><span>    Owned(</span><span style="color:#a626a4;">&lt;</span><span>B </span><span style="color:#a626a4;">as </span><span>ToOwned</span><span style="color:#a626a4;">&gt;</span><span>::Owned),
+</span><span>}
+</span></code></pre>
+<p><code>Cow</code>实现了<code>Deref</code>，对内部的只读访问透明。但<code>Cow</code>未实现<code>DerefMut</code>。</p>
+<p>若需修改其内容，抑或需要内容的所有权，可调用<code>to_mut</code>方法。注意：</p>
+<ul>
+<li><code>to_mut</code>的功能是<strong>生成具备所有权的值之可变引用</strong>。</li>
+<li>不具备所有权，调用<code>to_mut</code>会<code>clone</code>此值。</li>
+<li>已具备所有权，调用<code>to_mut</code>不再<code>clone</code>。</li>
+</ul>
+<p><code>into_owned</code>会通过创建<strong>所有权对象</strong>，但是：</p>
+<ul>
+<li>如果之前<code>Cow</code>中的值是<strong>借用状态</strong>，它将执行<code>clone</code>。</li>
+<li>本方法会<strong>消费</strong><code>Cow</code>实例。</li>
+</ul>
+<blockquote>
+<p>参考文章</p>
+<p><a rel="noopener" target="_blank" href="https://dev.to/zhanghandong/rust-concept-clarification-deref-vs-asref-vs-borrow-vs-cow-13g6">张汉东 - Rust Concept Clarification: Deref vs AsRef vs Borrow vs Cow</a></p>
+</blockquote>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

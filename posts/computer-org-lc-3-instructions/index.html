@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>LC-3的指令 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>LC-3的指令</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-03-12</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#isa">ISA</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#nei-cun-zu-cheng">内存组成</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#ji-cun-qi-ji">寄存器集</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#zhi-ling-ji">指令集</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#cao-zuo-ma-shu-ju-lei-xing">操作码 &amp; 数据类型</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#xun-zhi-mo-shi">寻址模式</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#tiao-jian-ma">条件码</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#yun-suan-zhi-ling">运算指令</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#add">ADD</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#and">AND</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#shu-ju-yi-dong-zhi-ling">数据移动指令</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#lea">LEA</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#pcxiang-guan-mo-shi">PC相关模式</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#jian-jie-mo-shi">间接模式</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#ji-di-pian-yi-liang">基底 + 偏移量</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#kong-zhi-zhi-ling">控制指令</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#br">BR</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#jmp">JMP</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#fu-wu-diao-yong-trap">服务调用 —— TRAP</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-lc-3-instructions/#xun-huan">循环</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="isa">ISA</h2>
+<h3 id="nei-cun-zu-cheng">内存组成</h3>
+<p>最小寻址段为16bit，即LC-3的字大小，又称字寻址。</p>
+<h3 id="ji-cun-qi-ji">寄存器集</h3>
+<p>可在一个时钟周期内访问的临时储存位置。</p>
+<p>LC-3共有8个普适寄存器(<strong>GPR</strong>)，存储空间皆为一字。</p>
+<p>或称<strong>寄存器文件</strong>。</p>
+<h3 id="zhi-ling-ji">指令集</h3>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>ADD  |0 0 0 1| DR  | SR1  |0| 00 | SR2  |
+</span><span>
+</span><span>ADD  |0 0 0 1| DR  | SR1  |1|   imm5    |
+</span><span>
+</span><span>AND  |0 1 0 1| DR  | SR1  |0| 00 | SR2  |
+</span><span>
+</span><span>AND  |0 1 0 1| DR  | SR1  |1|   imm5    |
+</span><span>
+</span><span>BR   |0 0 0 0|n|z|p|    PCoffset9       |
+</span><span>
+</span><span>JMP  |1 1 0 0| 000 |BaseR |   000000    |
+</span><span>
+</span><span>JSR  |0 1 0 0|1|      PCoffset11        |
+</span><span>
+</span><span>JSRR |0 1 0 0| 0|00|BaseR|    000000    |
+</span><span>
+</span><span>LD   |0 0 1 0| DR  |    PCoffset9       |
+</span><span>
+</span><span>LDI  |1 0 1 0| DR  |    PCoffset9       |
+</span><span>
+</span><span>LDR  |0 1 1 0| DR  |BaseR|   offset6    |
+</span><span>
+</span><span>LEA  |1 1 1 0| DR  |    PCoffset9       |
+</span><span>
+</span><span>NOT  |1 0 0 1| DR  | SR  |   111111     |
+</span><span>
+</span><span>RET  |1 1 0 0| 000 | 111 |   000000     |
+</span><span>
+</span><span>RTI  |1 0 0 0|      000000000000        |
+</span><span>
+</span><span>ST   |0 0 1 1| SR  |  PCoffset9         |
+</span><span>
+</span><span>STI  |1 0 1 1| SR  |  PCoffset9         |
+</span><span>
+</span><span>STR  |0 1 1 1| SR  |BaseR|   offset6    |
+</span><span>
+</span><span>TRAP |1 1 1 1| 0000|    trapvector8     |
+</span></code></pre>
+<h3 id="cao-zuo-ma-shu-ju-lei-xing">操作码 &amp; 数据类型</h3>
+<p>操作码根据其支持的数据类型翻译比特模式。</p>
+<h3 id="xun-zhi-mo-shi">寻址模式</h3>
+<p>指出操作对象所在的机制。</p>
+<p>操作对象可以位于内存、寄存器里，或作为指令的一部分(即时值/字面值)。</p>
+<p>分成三类：PC-相关，间接求值，基底+偏移量。</p>
+<h3 id="tiao-jian-ma">条件码</h3>
+<p>条件码用于帮助控制指令核对执行条件。</p>
+<p>LC-3有三个条件码：</p>
+<ul>
+<li>N：负数</li>
+<li>Z：〇</li>
+<li>P：正数</li>
+</ul>
+<p>它们由三个1bit寄存器分别储存，内部使用<strong>0/1</strong>表示<strong>否/是</strong>状态。</p>
+<p>当GPR被一次操作或加载指令覆写时，条件码随之发生相应变化。</p>
+<p>例如，GPR内的结果为负，则N置1，Z和P清0。</p>
+<h2 id="yun-suan-zhi-ling">运算指令</h2>
+<h3 id="add">ADD</h3>
+<p>Ins[5] = 0，指出第二个操作对象的来源在R6，即Ins[2:0]的二进制码。</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>   ADD     R6     R2         R6
+</span><span>|0 0 0 1|1 1 0|0 1 0|0|0 0|1 1 0|
+</span><span>
+</span></code></pre>
+<p>Ins[5] = 1，指出第二个操作对象通过<strong>符号扩展</strong>Ins[4:0]获取。</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>   ADD     R6    R2        imm
+</span><span>|0 0 0 1|1 1 0|0 1 0|1|0 0 1 1 0|
+</span></code></pre>
+<p>Ins[11:9]指向运算结果的寄存器，此处为R6。</p>
+<h3 id="and">AND</h3>
+<p>下面演示初始化R2：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>   AND     R2    R3        imm
+</span><span>|0 1 0 1|0 1 0|0 1 1|1|0 0 0 0 0|
+</span></code></pre>
+<p>使用R3的数据，<strong>与</strong>Ins[4:0]的即时数据，运算结果<strong>全0</strong>加载到R2。</p>
+<blockquote>
+<p>Ins[5] = 0 是双输入寻址；Ins[5] = 1 是即时模式。</p>
+</blockquote>
+<h2 id="shu-ju-yi-dong-zhi-ling">数据移动指令</h2>
+<p>从内存移动信息至寄存器的过程称为<strong>加载</strong>；从寄存器移动信息至内存的过程称为<strong>储存</strong>。</p>
+<p>数据移动指令Ins[8:0]为<strong>数据生成位</strong>，用于寻址模式下计算目标地址。</p>
+<h3 id="lea">LEA</h3>
+<p>全称<strong>Load Effective Address</strong>。</p>
+<p>该指令不访问内存，只是加载算好的地址到寄存器。</p>
+<p>LEA善于用离它很近的地址初始化寄存器。</p>
+<p>示例：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>   LEA    R5            -3
+</span><span>|1 1 1 0|1 0 1|1 1 1 1 1 1 1 0 1|
+</span></code></pre>
+<p>假设PC的值为x4019，则此命令会将<code>x4019 - 3 = x4016</code>加载到R5。</p>
+<p>特别注意，LEA不影响条件码。</p>
+<h3 id="pcxiang-guan-mo-shi">PC相关模式</h3>
+<p>此模式下，目标地址不能离指令的内存位置太远，即<code>offset ∈ [-255, +256]</code>。</p>
+<h4 id="ld">LD</h4>
+<p>全称<strong>load</strong>。</p>
+<p>LD的寻址模式是<code>PC + offset</code>。</p>
+<p>示例：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>    LD     R2              198
+</span><span>|0 0 1 0|0 1 0|0 1 1 0 0 0 1 1 0|
+</span></code></pre>
+<p>令PC的值加上198，计算出目标地址，加载其位置的值到R2。</p>
+<h4 id="st">ST</h4>
+<p>全称<strong>store</strong>。</p>
+<p>ST的寻址模式是<code>PC + offset</code>。</p>
+<p>示例：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>    ST     R2              198
+</span><span>|0 0 1 1|0 1 0|0 1 1 0 0 0 1 1 0|
+</span></code></pre>
+<p>将R2的值写入内存上地址为<code>PC + 198</code>的位置。</p>
+<h3 id="jian-jie-mo-shi">间接模式</h3>
+<p>移动地址之地址。</p>
+<h4 id="ldi">LDI</h4>
+<p>示例：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>   LDI     R3           x1CC
+</span><span>|1 0 1 0|0 1 1|1 1 1 0 0 1 1 0 0|
+</span></code></pre>
+<p>假设：指令位于x4A1B；PC含有x4A1C；x49E8处内容为x2110。</p>
+<p>Ins[9:0] = x1CC 经SEXT得xFFCC，则目标地址为<code>x4A1C + xFFCC = x49E8</code>。此结果加载到MAR，读取内存复得x2110。凭此再读取内存，目标操作对象载入MDR。最终，MDR的内容加载到R3。条件码也发生相应变化。</p>
+<h3 id="ji-di-pian-yi-liang">基底 + 偏移量</h3>
+<p>使用<strong>基底寄存器</strong>的值加上偏移字面值，得到目标地址。</p>
+<p>此模式能够读取内存的任何一处。</p>
+<h4 id="ldr">LDR</h4>
+<p>示例：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>   LDR     R1    R2     x1D
+</span><span>|0 1 1 0|0 0 1|0 1 0|0 1 1 1 0 1|
+</span></code></pre>
+<p>假设：基底R2的值是x2345；x2362处内容为x0F0F。</p>
+<p>Ins[5:0] = x1D 经SEXT得x001D，则目标地址为<code>x2345 + x001D = x2362</code>。此结果加载到MAR，读取内存复得x0F0F。凭此再读取内存，目标操作对象载入MDR。最终，MDR的内容加载到R1。条件码也发生相应变化。</p>
+<h2 id="kong-zhi-zhi-ling">控制指令</h2>
+<p>中断执行流，进行某些操作。</p>
+<p>类型有：</p>
+<ul>
+<li>条件分支</li>
+<li>无条件跳跃</li>
+<li>子程序调用(函数)</li>
+<li>服务调用</li>
+<li>RTI (Return from TRAP or Interrupt)</li>
+</ul>
+<h3 id="br">BR</h3>
+<h4 id="tiao-jian-fen-zhi">条件分支</h4>
+<p>在EVALUATE ADDRESS阶段，按PC相关寻址模式求出新地址。在EXECUTE阶段，处理器核对BR中为1的条件码。若满足，就用新地址覆写PC。</p>
+<p>示例：</p>
+<p>假设：上一指令为ADD，且加载到GPR的结果是负数，故条件码N置1，Z、P清0；PC含有x36CA。</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>   BR     条件           -6
+</span><span>|0 0 0 0|1 0 1|1 1 1 1 1 1 0 1 0|
+</span></code></pre>
+<p>EVALUATE ADDRESS阶段，求出新地址<code>x36CA - 6 = x36C4</code>。</p>
+<p>EXECUTE阶段，核对置1条件码，发现<code>N = 1</code>满足<code>n = 1</code>。用x36C4覆写PC。</p>
+<h4 id="wu-tiao-jian-fen-zhi">无条件分支</h4>
+<p>当<code>Ins[11:9] = 111</code>，无条件改变执行流，与上一指令的结果无关。</p>
+<p>示例：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>   BR     条件          x185
+</span><span>|0 0 0 0|1 1 1|1 1 0 0 0 0 1 0 1|
+</span></code></pre>
+<h3 id="jmp">JMP</h3>
+<p>BR的跳转范围有限，因为<code>offset ∈ [-255, +256]</code>。</p>
+<p>JMP是纯跳转命令，按间接模式寻址，不带偏移量。</p>
+<p>示例：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>   JMP           R2
+</span><span>|1 1 0 0|0 0 0|0 1 0|0 0 0 0 0 0|
+</span></code></pre>
+<p>假设：R2含有x6600。</p>
+<p>在EXECUTE阶段，位于x6600的指令被加载到PC。</p>
+<h3 id="fu-wu-diao-yong-trap">服务调用 —— TRAP</h3>
+<p>该指令允许程序向操作系统求助，它依靠<strong>陷阱矢量</strong>(8bit)辨识程序所需援助。</p>
+<p>常见援助及相应陷阱矢量：</p>
+<ul>
+<li>从键盘输入字符 —— x23</li>
+<li>输出字符到显示器 —— x21</li>
+<li>停止程序 —— x25</li>
+</ul>
+<h2 id="xun-huan">循环</h2>
+<p>程序映射到内存，分配的指令不会改写，这是循环的前提。循环利用跳转指令实现，大幅减少执行重复性任务的指令数量。</p>
+<p>循环根据逻辑可分为两类：</p>
+<ul>
+<li>计数器循环：维护一个计数器，初始化、核对终止条件、增减。</li>
+<li>哨兵循环：仅提供终止条件码。</li>
+</ul>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

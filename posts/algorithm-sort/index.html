@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>排序：复杂度及其证明 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          // customised options
+          // • auto-render specific keys, e.g.:
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          // • rendering keys, e.g.:
+          throwOnError : false
+        });
+    });
+</script>
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>排序：复杂度及其证明</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-04-11</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/algorithm-sort/#mou-pao-pai-xu">冒泡排序</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#shi-jian-fu-za-du">时间复杂度</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#dai-ma">代码</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#zheng-ming">证明</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/algorithm-sort/#xuan-ze-pai-xu">选择排序</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#shi-jian-fu-za-du-1">时间复杂度</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#dai-ma-1">代码：</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#lun-zheng">论证</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/algorithm-sort/#cha-ru-pai-xu">插入排序</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#shi-jian-fu-za-du-2">时间复杂度</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#dai-ma-2">代码</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#lun-zheng-1">论证</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/algorithm-sort/#gui-bing-pai-xu">归并排序</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#shi-jian-fu-za-du-3">时间复杂度</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#kong-jian-fu-za-du">空间复杂度</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#dai-ma-3">代码</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#lun-zheng-2">论证</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/algorithm-sort/#dui-pai-xu">堆排序</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#shi-jian-fu-za-du-4">时间复杂度</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#dai-ma-4">代码</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-sort/#lun-zheng-3">论证</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="mou-pao-pai-xu">冒泡排序</h2>
+<h3 id="shi-jian-fu-za-du">时间复杂度</h3>
+<ul>
+<li>最好：$O(n)$</li>
+<li>平均：$O(n^{2})$</li>
+<li>最坏：$O(n^{2})$</li>
+</ul>
+<h3 id="dai-ma">代码</h3>
+<pre data-lang="rust" style="background-color:#fafafa;color:#383a42;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#a626a4;">pub fn </span><span style="color:#0184bc;">bubble</span><span>&lt;T: Ord&gt;(</span><span style="color:#e45649;">arr</span><span>: </span><span style="color:#a626a4;">&amp;mut</span><span> [T]) {
+</span><span>    </span><span style="color:#a626a4;">for</span><span> out </span><span style="color:#a626a4;">in </span><span style="color:#c18401;">1</span><span style="color:#a626a4;">..</span><span>arr.</span><span style="color:#0184bc;">len</span><span>() {
+</span><span>        </span><span style="color:#a626a4;">let mut</span><span> swapped </span><span style="color:#a626a4;">= </span><span style="color:#c18401;">false</span><span>;
+</span><span>
+</span><span>        </span><span style="color:#a626a4;">for</span><span> i </span><span style="color:#a626a4;">in </span><span style="color:#c18401;">0</span><span style="color:#a626a4;">..</span><span>(arr.</span><span style="color:#0184bc;">len</span><span>() </span><span style="color:#a626a4;">-</span><span> out) {
+</span><span>            </span><span style="color:#a626a4;">if</span><span> arr[i] </span><span style="color:#a626a4;">&gt;</span><span> arr[i </span><span style="color:#a626a4;">+ </span><span style="color:#c18401;">1</span><span>] {
+</span><span>                arr.</span><span style="color:#0184bc;">swap</span><span>(i, i </span><span style="color:#a626a4;">+ </span><span style="color:#c18401;">1</span><span>);
+</span><span>
+</span><span>                swapped </span><span style="color:#a626a4;">= </span><span style="color:#c18401;">true</span><span>;
+</span><span>            }
+</span><span>        }
+</span><span>
+</span><span>        </span><span style="color:#a626a4;">if !</span><span>swapped {
+</span><span>            </span><span style="color:#a626a4;">break</span><span>;
+</span><span>        }
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<h3 id="zheng-ming">证明</h3>
+<ul>
+<li>
+<p>命题：对于长度为 $N$ 的数组，</p>
+<ul>
+<li>
+<p>最坏情况：需要 $\sim \frac{N^{2}}{2}$ 次比较 和 $\sim \frac{N^{2}}{2}$ 次交换；</p>
+</li>
+<li>
+<p>最好情况：需要 $\sim N$ 次比较 和 $0$ 次交换。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>证明：</p>
+<p>最坏情况下，最左侧的元素会一路交换到正确位置。比如 $arr_0$ 去到第 $N$ 位，$arr_1$ 去到第 $N - 1$ 位⋯⋯如此类推。因此，总比较次数为 $(N − 1) + (N − 2) + ⋯ + 2 + 1 = \frac{N(N − 1)}{2}$，总交换次数与此一致。</p>
+<p>最好情况下，由于<code>swapped</code>变量监视着<strong>未操作部分</strong>是否有序，当第一轮外循环的内循环结束，排序就退出了。故总比较次数是 $N - 1$，没发生交换。</p>
+</li>
+</ul>
+<h2 id="xuan-ze-pai-xu">选择排序</h2>
+<h3 id="shi-jian-fu-za-du-1">时间复杂度</h3>
+<ul>
+<li>最好：$O(n^{2})$</li>
+<li>最坏：$O(n^{2})$</li>
+</ul>
+<h3 id="dai-ma-1">代码：</h3>
+<pre data-lang="rust" style="background-color:#fafafa;color:#383a42;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#a626a4;">pub fn </span><span style="color:#0184bc;">selection</span><span>&lt;T: Ord&gt;(</span><span style="color:#e45649;">arr</span><span>: </span><span style="color:#a626a4;">&amp;mut</span><span> [T]) {
+</span><span>    </span><span style="color:#a626a4;">for</span><span> left </span><span style="color:#a626a4;">in </span><span style="color:#c18401;">0</span><span style="color:#a626a4;">..</span><span>arr.</span><span style="color:#0184bc;">len</span><span>() {
+</span><span>        </span><span style="color:#a626a4;">let</span><span> min </span><span style="color:#a626a4;">= </span><span>(left</span><span style="color:#a626a4;">..</span><span>arr.</span><span style="color:#0184bc;">len</span><span>())
+</span><span>                  .</span><span style="color:#0184bc;">min_by_key</span><span>(|</span><span style="color:#a626a4;">&amp;</span><span style="color:#e45649;">i</span><span>| arr.</span><span style="color:#0184bc;">index</span><span>(i))
+</span><span>                  .</span><span style="color:#0184bc;">unwrap</span><span>();
+</span><span>        arr.</span><span style="color:#0184bc;">swap</span><span>(left, min);
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<h3 id="lun-zheng">论证</h3>
+<ul>
+<li>
+<p>命题：对于长度为 $N$ 的数组，选择排序需要大约 $\frac{N^{2}}{2}$ 次比较和 $N$ 次交换。</p>
+</li>
+<li>
+<p>证明：</p>
+<p>对于从 0 到 N-1 的任意 left，都有 $1$ 次交换 和 $N - 1 - left$ 次比较。</p>
+<p>因此，共有 N 次交换，以及 $(N-1) + (N-2) + ... + 2 + 1 = N(N-1)/2 \sim N^{2}/2$ 次比较。</p>
+</li>
+</ul>
+<h2 id="cha-ru-pai-xu">插入排序</h2>
+<h3 id="shi-jian-fu-za-du-2">时间复杂度</h3>
+<ul>
+<li>最好：$O(n)$</li>
+<li>平均：$O(n^{2})$</li>
+<li>最坏：$O(n^{2})$</li>
+</ul>
+<h3 id="dai-ma-2">代码</h3>
+<pre data-lang="rust" style="background-color:#fafafa;color:#383a42;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#a626a4;">pub fn </span><span style="color:#0184bc;">insertion</span><span>&lt;T: Ord&gt;(</span><span style="color:#e45649;">arr</span><span>: </span><span style="color:#a626a4;">&amp;mut</span><span> [T]) {
+</span><span>    </span><span style="color:#a626a4;">for</span><span> out </span><span style="color:#a626a4;">in </span><span style="color:#c18401;">1</span><span style="color:#a626a4;">..</span><span>arr.</span><span style="color:#0184bc;">len</span><span>() {
+</span><span>        </span><span style="color:#a626a4;">let mut</span><span> n </span><span style="color:#a626a4;">=</span><span> out;
+</span><span>        </span><span style="color:#a626a4;">while</span><span> out </span><span style="color:#a626a4;">&gt; </span><span style="color:#c18401;">0 </span><span style="color:#a626a4;">&amp;&amp;</span><span> arr[n] </span><span style="color:#a626a4;">&lt;</span><span> arr[n </span><span style="color:#a626a4;">- </span><span style="color:#c18401;">1</span><span>] {
+</span><span>            arr.</span><span style="color:#0184bc;">swap</span><span>(n, n </span><span style="color:#a626a4;">- </span><span style="color:#c18401;">1</span><span>);
+</span><span>
+</span><span>            n </span><span style="color:#a626a4;">-= </span><span style="color:#c18401;">1</span><span>;
+</span><span>        }
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<h3 id="lun-zheng-1">论证</h3>
+<ul>
+<li>
+<p>命题：对于随机排列的长度为 $N$ 且<strong>元素互异</strong>的数组，</p>
+<ul>
+<li>
+<p>平均情况：需要 $\sim \frac{N^{2}}{4}$ 次比较 和 $\sim \frac{N^{2}}{4}$ 次交换；</p>
+</li>
+<li>
+<p>最坏情况：需要 $\sim \frac{N^{2}}{2}$ 次比较 和 $\sim \frac{N^{2}}{2}$ 次交换；</p>
+</li>
+<li>
+<p>最好情况：需要 $N - 1$ 次比较 和 $0$ 次交换。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>证明：</p>
+<p>插入排序是将第 $out$ 个元素插入到<strong>有序排列</strong>的前 $out$ 个元素当中（0起索引）。经过线性搜索，当前元素会插入到最右边的不小于它的元素右侧。</p>
+<p>对于随机排列的数组，在平均情况下每个元素都可能向后移动半个数组的长度，因此交换总数是对角线之下元素总数的一半；比较的总次数是交换的次数加上一个额外的项，该项为 $N$ 减去被插入的元素正好是已知的最小元素的次数。</p>
+<p>最坏情况下，线性搜索会比较 $out + 1$ 次（0起索引），故<strong>总比较次数</strong>为 $2 + 3 + ⋯ + N = \frac{N(N + 1)}{2} − 1$，即 $\sim N^{2}/2$。同时，每回交换次数为比较次数减一，因此<strong>总交换次数</strong>为 $\frac{N(N - 1)}{2}$。</p>
+<p>最好情况下，显然，总比较次数为 $N - 1$。没有元素交换，故总交换次数为 $0$。</p>
+<p>平均情况不会证。</p>
+</li>
+</ul>
+<h2 id="gui-bing-pai-xu">归并排序</h2>
+<h3 id="shi-jian-fu-za-du-3">时间复杂度</h3>
+<ul>
+<li>最好：$O(n\log_{2}{n})$</li>
+<li>平均：$O(n\log_{2}{n})$</li>
+<li>最坏：$O(n\log_{2}{n})$</li>
+</ul>
+<h3 id="kong-jian-fu-za-du">空间复杂度</h3>
+<p>需要辅助数组，乃 $O(n)$ 。</p>
+<h3 id="dai-ma-3">代码</h3>
+<pre data-lang="rust" style="background-color:#fafafa;color:#383a42;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#a626a4;">use </span><span>std::mem;
+</span><span>
+</span><span style="color:#a626a4;">pub fn </span><span style="color:#0184bc;">msort</span><span>&lt;T: Ord </span><span style="color:#a626a4;">+ </span><span>Clone&gt;(</span><span style="color:#e45649;">arr</span><span>: </span><span style="color:#a626a4;">&amp;mut</span><span> [T]) {
+</span><span>    </span><span style="color:#a626a4;">let mut</span><span> aux: Vec&lt;T&gt; </span><span style="color:#a626a4;">=</span><span> arr.</span><span style="color:#0184bc;">into</span><span>();
+</span><span>
+</span><span>    </span><span style="color:#0184bc;">merge</span><span>(arr, </span><span style="color:#a626a4;">&amp;mut</span><span> aux);
+</span><span>}
+</span><span>
+</span><span style="color:#a626a4;">fn </span><span style="color:#0184bc;">merge</span><span>&lt;T: Ord </span><span style="color:#a626a4;">+ </span><span>Clone&gt;(</span><span style="color:#e45649;">arr</span><span>: </span><span style="color:#a626a4;">&amp;mut</span><span> [T], </span><span style="color:#e45649;">aux</span><span>: </span><span style="color:#a626a4;">&amp;mut</span><span> [T]) {
+</span><span>    </span><span style="color:#a626a4;">let</span><span> len </span><span style="color:#a626a4;">=</span><span> arr.</span><span style="color:#0184bc;">len</span><span>();
+</span><span>
+</span><span>    </span><span style="color:#a626a4;">if</span><span> len </span><span style="color:#a626a4;">&lt; </span><span style="color:#c18401;">2 </span><span>{
+</span><span>        </span><span style="color:#a626a4;">return</span><span>;
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#a626a4;">let</span><span> mid </span><span style="color:#a626a4;">=</span><span> len </span><span style="color:#a626a4;">/ </span><span style="color:#c18401;">2</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#a626a4;">let </span><span>(arr_l, arr_r) </span><span style="color:#a626a4;">=</span><span> arr.</span><span style="color:#0184bc;">split_at_mut</span><span>(mid);
+</span><span>    </span><span style="color:#a626a4;">let </span><span>(aux_l, aux_r) </span><span style="color:#a626a4;">=</span><span> aux.</span><span style="color:#0184bc;">split_at_mut</span><span>(mid);
+</span><span>
+</span><span>    </span><span style="color:#0184bc;">merge</span><span>(arr_l, aux_l);
+</span><span>    </span><span style="color:#0184bc;">merge</span><span>(arr_r, aux_r);
+</span><span>
+</span><span>    </span><span style="color:#a626a4;">let mut</span><span> left </span><span style="color:#a626a4;">= </span><span style="color:#c18401;">0</span><span>;
+</span><span>    </span><span style="color:#a626a4;">let mut</span><span> right </span><span style="color:#a626a4;">=</span><span> mid;
+</span><span>
+</span><span>    </span><span style="color:#a626a4;">for</span><span> x </span><span style="color:#a626a4;">in</span><span> aux.</span><span style="color:#0184bc;">iter_mut</span><span>() {
+</span><span>        </span><span style="color:#a626a4;">if</span><span> left </span><span style="color:#a626a4;">&gt;=</span><span> mid </span><span style="color:#a626a4;">|| </span><span>(right </span><span style="color:#a626a4;">&lt;</span><span> len </span><span style="color:#a626a4;">&amp;&amp;</span><span> arr[left] </span><span style="color:#a626a4;">&gt;</span><span> arr[right]) {
+</span><span>            mem::swap(x, </span><span style="color:#a626a4;">&amp;mut</span><span> arr[right]);
+</span><span>            right </span><span style="color:#a626a4;">+= </span><span style="color:#c18401;">1</span><span>;
+</span><span>        } </span><span style="color:#a626a4;">else </span><span>{
+</span><span>            mem::swap(x, </span><span style="color:#a626a4;">&amp;mut</span><span> arr[left]);
+</span><span>            left </span><span style="color:#a626a4;">+= </span><span style="color:#c18401;">1</span><span>;
+</span><span>        }
+</span><span>    }
+</span><span>
+</span><span>    arr.</span><span style="color:#0184bc;">clone_from_slice</span><span>(aux);
+</span><span>}
+</span></code></pre>
+<h3 id="lun-zheng-2">论证</h3>
+<ul>
+<li>
+<p>命题：对于长度为 $N$ (偶数) 的数组，</p>
+<ul>
+<li>
+<p>最坏情况下比较次数<strong>分治递归关系式</strong>：$M(N) = 2M(\frac{N}{2}) + N$</p>
+</li>
+<li>
+<p>归并排序时间复杂度：$O(n\log_{2}{n})$</p>
+</li>
+<li>
+<p>归并排序空间复杂度：$O(n)$</p>
+</li>
+</ul>
+</li>
+<li>
+<p>证明：</p>
+<p>归并会将 $N$ 长数组拆分成两个 $\frac{N}{2}$ 长数组，并再次归并排序两者。待两子数组排完序，当前排序将合并重排它们，发生 $N$ 次比较。故得 $M(N) = 2M(\frac{N}{2}) + N$。</p>
+<p>根据<strong>分治递归关系主定理</strong>，可知归并排序的时间复杂度是 $O(N\log_{2}{N})$ 。</p>
+<p>归并排序递归开辟函数栈的空间复杂度是 $O(\log_{2}{N})$ ；创建一个等长辅助数组的空间复杂度是 $O(N)$ 。因此归并排序的空间复杂度是<strong>两行为复杂度</strong>之和，$\max(O(\log_{2}{N}), O(N)) = O(N)$ 。</p>
+</li>
+</ul>
+<h2 id="dui-pai-xu">堆排序</h2>
+<h3 id="shi-jian-fu-za-du-4">时间复杂度</h3>
+<ul>
+<li>最好：$O(n\log_{2}{n})$</li>
+<li>平均：$O(n\log_{2}{n})$</li>
+<li>最坏：$O(n\log_{2}{n})$</li>
+</ul>
+<h3 id="dai-ma-4">代码</h3>
+<pre data-lang="rust" style="background-color:#fafafa;color:#383a42;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#a626a4;">fn </span><span style="color:#0184bc;">sink</span><span>&lt;T: Ord&gt;(</span><span style="color:#e45649;">arr</span><span>: </span><span style="color:#a626a4;">&amp;mut</span><span> [T], </span><span style="color:#a626a4;">mut </span><span style="color:#e45649;">parent</span><span>: </span><span style="color:#a626a4;">usize</span><span>) {
+</span><span>    </span><span style="color:#a626a4;">let</span><span> last </span><span style="color:#a626a4;">=</span><span> arr.</span><span style="color:#0184bc;">len</span><span>() </span><span style="color:#a626a4;">- </span><span style="color:#c18401;">1</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#a626a4;">loop </span><span>{
+</span><span>        </span><span style="color:#a626a4;">let</span><span> left </span><span style="color:#a626a4;">= </span><span style="color:#c18401;">2 </span><span style="color:#a626a4;">*</span><span> parent </span><span style="color:#a626a4;">+ </span><span style="color:#c18401;">1</span><span>;
+</span><span>
+</span><span>        </span><span style="color:#a626a4;">if</span><span> left </span><span style="color:#a626a4;">&gt;</span><span> last {
+</span><span>            </span><span style="color:#a626a4;">break</span><span>;
+</span><span>        }
+</span><span>
+</span><span>        </span><span style="color:#a626a4;">let</span><span> right </span><span style="color:#a626a4;">=</span><span> left </span><span style="color:#a626a4;">+ </span><span style="color:#c18401;">1</span><span>;
+</span><span>
+</span><span>        </span><span style="color:#a626a4;">let</span><span> max </span><span style="color:#a626a4;">= match</span><span> left </span><span style="color:#a626a4;">!=</span><span> last </span><span style="color:#a626a4;">&amp;&amp;</span><span> arr[right] </span><span style="color:#a626a4;">&gt;</span><span> arr[left] {
+</span><span>            </span><span style="color:#c18401;">true </span><span style="color:#a626a4;">=&gt;</span><span> right,
+</span><span>            </span><span style="color:#c18401;">false </span><span style="color:#a626a4;">=&gt;</span><span> left,
+</span><span>        };
+</span><span>
+</span><span>        </span><span style="color:#a626a4;">if</span><span> arr[parent] </span><span style="color:#a626a4;">&lt;</span><span> arr[max] {
+</span><span>            arr.</span><span style="color:#0184bc;">swap</span><span>(parent, max);
+</span><span>        }
+</span><span>
+</span><span>        parent </span><span style="color:#a626a4;">=</span><span> max;
+</span><span>    }
+</span><span>}
+</span><span>
+</span><span style="color:#a626a4;">pub fn </span><span style="color:#0184bc;">heap</span><span>&lt;T: Ord&gt;(</span><span style="color:#e45649;">arr</span><span>: </span><span style="color:#a626a4;">&amp;mut</span><span> [T]) {
+</span><span>    </span><span style="color:#a626a4;">let</span><span> len </span><span style="color:#a626a4;">=</span><span> arr.</span><span style="color:#0184bc;">len</span><span>();
+</span><span>
+</span><span>    </span><span style="color:#a626a4;">if</span><span> len </span><span style="color:#a626a4;">&lt; </span><span style="color:#c18401;">2 </span><span>{
+</span><span>        </span><span style="color:#a626a4;">return</span><span>;
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#a626a4;">for</span><span> parent </span><span style="color:#a626a4;">in </span><span>(</span><span style="color:#c18401;">0</span><span style="color:#a626a4;">..=</span><span>len </span><span style="color:#a626a4;">/ </span><span style="color:#c18401;">2 </span><span style="color:#a626a4;">- </span><span style="color:#c18401;">1</span><span>).</span><span style="color:#0184bc;">rev</span><span>() {
+</span><span>        </span><span style="color:#0184bc;">sink</span><span>(arr, parent);
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#a626a4;">for</span><span> end </span><span style="color:#a626a4;">in </span><span>(</span><span style="color:#c18401;">1</span><span style="color:#a626a4;">..</span><span>len).</span><span style="color:#0184bc;">rev</span><span>() {
+</span><span>        arr.</span><span style="color:#0184bc;">swap</span><span>(</span><span style="color:#c18401;">0</span><span>, end);
+</span><span>
+</span><span>        </span><span style="color:#0184bc;">sink</span><span>(</span><span style="color:#a626a4;">&amp;mut</span><span> arr[</span><span style="color:#a626a4;">..</span><span>end], </span><span style="color:#c18401;">0</span><span>);
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<h3 id="lun-zheng-3">论证</h3>
+<ul>
+<li>
+<p>命题：对于长度为 $N$ 的数组，最坏情况下需要 $\sim \frac{3N}{2}\log_{2}{N}$ 次比较。</p>
+</li>
+<li>
+<p>证明：</p>
+<p>对于构建大顶堆循环的任意 $parent$ ，都有从二叉树深度为 $parent$ 处向下比较交换，忽略退出条件的校验，则构建大顶堆所需总比较次数为 $\log_{2}{2} + \log_{2}{3} + ⋯ + \log_{2}{(\frac{N}{2} - 1)}$ ，其 $\sim \frac{N}{2}\log_{2}{N}$。</p>
+<p>接下来，从后往前遍历截至堆顶下，交换堆顶与堆底最右侧叶子，即置换最大元素与最小元素，并重新堆化剩余元素。因为每次堆化都调用<code>sink</code>，故总比较次数为 $\log_{2}{N} + \log_{2}{N - 1} + \log_{2}{N - 2} + ⋯ + \log_{2}{1}$ ，其 $\sim N\log_{2}{N}$。</p>
+<p>综上，最坏情况下比较次数 $\sim \frac{3N}{2}\log_{2}{N}$。</p>
+</li>
+</ul>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

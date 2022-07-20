@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>启用NVIDIA显卡 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>启用NVIDIA显卡</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-01-19</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-nvidia-gpu/#nqia-qu-dong">N卡驱动</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-nvidia-gpu/#xian-qia-guan-li-qi">显卡管理器</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-nvidia-gpu/#qi-yong">启用</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-nvidia-gpu/#que-ren-du-xian-gong-zuo">确认独显工作</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <p>Linux与N卡之间是一篇血泪史，任何想在Linux上使用N卡的人势必经历一番折磨。为减轻痛苦，我采用简单粗暴的<code>optimus-manager</code>方案。</p>
+<h2 id="nqia-qu-dong">N卡驱动</h2>
+<blockquote>
+<p>依赖: pciutils, pacman</p>
+</blockquote>
+<p>识别显卡型号:</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> lspci</span><span style="color:#e45649;"> -k </span><span style="color:#a626a4;">| </span><span style="color:#e45649;">grep -A</span><span> 2</span><span style="color:#e45649;"> -E </span><span style="color:#50a14f;">&quot;(VGA|3D)&quot;
+</span></code></pre>
+<p>我的独显是<strong>GTX-1650</strong>，且系统使用标准内核，按照Wiki所述，应安装<code>nvidia</code>包。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> sudo pacman</span><span style="color:#e45649;"> -S</span><span> nvidia
+</span></code></pre>
+<p>重启令其生效。</p>
+<h2 id="xian-qia-guan-li-qi">显卡管理器</h2>
+<blockquote>
+<p>依赖: pacman</p>
+</blockquote>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 管理程序，源在archlinuxcn
+</span><span style="color:#e45649;">$</span><span> sudo pacman</span><span style="color:#e45649;"> -S</span><span> optimus-manager
+</span><span>
+</span><span style="color:#a0a1a7;"># 图形界面，飞升者专享
+</span><span style="color:#e45649;">$</span><span> paru</span><span style="color:#e45649;"> -S</span><span> optimus-manager-qt
+</span></code></pre>
+<p>重启令其生效。</p>
+<h2 id="qi-yong">启用</h2>
+<blockquote>
+<p>依赖: optimus-manager-qt</p>
+</blockquote>
+<p>为了日常能切换显卡，你得设置<code>optimus-manager-qt</code>开机启动。</p>
+<p>它的图标会出现在状态栏，右键唤出菜单即可切换显卡，它会让你重新登录以完成切换。</p>
+<h2 id="que-ren-du-xian-gong-zuo">确认独显工作</h2>
+<blockquote>
+<p>依赖: pacman</p>
+</blockquote>
+<p>安装监视程序。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> sudo pacman</span><span style="color:#e45649;"> -S</span><span> mesa-utils
+</span></code></pre>
+<p>若你已切换到独显，则按如下操作，有信息返回即成功运行。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> glxinfo </span><span style="color:#a626a4;">| </span><span style="color:#e45649;">grep</span><span> NVIDIA
+</span></code></pre>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

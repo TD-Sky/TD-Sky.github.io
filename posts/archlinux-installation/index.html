@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>Archlinux：安装及配置 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>Archlinux：安装及配置</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-03-02</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-installation/#1-xi-tong-zhuang-tai">1 系统状态</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-installation/#2-an-zhuang">2 安装</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/archlinux-installation/#2-1-que-bao-an-zhuang-pan-ke-yong">2.1 确保安装盘可用</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/archlinux-installation/#2-2-hua-fen-ying-pan-kong-jian">2.2 划分硬盘空间</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/archlinux-installation/#2-3-gua-zai-bing-chu-shi-hua-xi-tong">2.3 挂载并初始化系统</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/archlinux-installation/#2-4-jin-ru-xi-tong">2.4 进入系统</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/archlinux-installation/#2-5-huan-jing-she-zhi">2.5 环境设置</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/archlinux-installation/#2-6-chuang-jian-yin-dao">2.6 创建引导</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/archlinux-installation/#2-7-tui-chu-xi-tong-bing-xie-zai">2.7 退出系统并卸载</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/archlinux-installation/#2-8-chi-kai-an-zhuang-pan">2.8 离开安装盘</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-installation/#3-pei-zhi">3 配置</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/archlinux-installation/#3-1-ji-chu-gou-jian-gong-ju-bao-aur-helper">3.1 基础构建工具包 &amp; aur helper</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/archlinux-installation/#3-2-jiao-hu-shell-chuang-jian-pu-tong-yong-hu">3.2 交互shell &amp; 创建普通用户</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/archlinux-installation/#3-3-tu-xing-jie-mian-zhi-chi">3.3 图形界面支持</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/archlinux-installation/#3-4-xian-shi-guan-li-qi">3.4 显示管理器</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/archlinux-installation/#3-5-shu-ru-fa">3.5 输入法</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="1-xi-tong-zhuang-tai">1 系统状态</h2>
+<ul>
+<li>
+<p>空间划分</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>    名称    类型  文件系统   空间    挂载点
+</span><span>硬盘                        476.9G
+</span><span>├─ESP       引导   fat32      2G    /boot/efi
+</span><span>└─LVM        PV             474.9G
+</span><span>  └─Sky      VG
+</span><span>    ├─Root   LV    ext4     442.9G     /
+</span><span>    └─Swap   LV    swap       32G    [SWAP]
+</span></code></pre>
+</li>
+<li>
+<p>引导程序: grub</p>
+</li>
+<li>
+<p>主机名: stele</p>
+</li>
+<li>
+<p>语言环境: en_US.UTF-8</p>
+</li>
+<li>
+<p>图形界面: X11 + awesome</p>
+<ul>
+<li>终端: alacritty</li>
+<li>锁屏: slock</li>
+<li>透明化: picom</li>
+<li>截图: ksnip</li>
+<li>程序启动器: rofi</li>
+<li>显示管理器: lightdm</li>
+</ul>
+</li>
+<li>
+<p>独立显卡</p>
+<ul>
+<li>型号: GeForce GTX 1650 Mobile / Max-Q</li>
+<li>管理方案: optimus-manager</li>
+</ul>
+</li>
+<li>
+<p>用户电源管理</p>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+关机</li>
+<li><input disabled="" type="checkbox" checked=""/>
+锁屏</li>
+<li><input disabled="" type="checkbox" checked=""/>
+重启</li>
+<li><input disabled="" type="checkbox" checked=""/>
+休眠，挂起到硬盘</li>
+<li><input disabled="" type="checkbox" checked=""/>
+睡眠，挂起到内存</li>
+</ul>
+</li>
+<li>
+<p>日用shell: zsh</p>
+</li>
+<li>
+<p>编辑器: neovim</p>
+</li>
+<li>
+<p>代码编辑器: lunarvim</p>
+</li>
+<li>
+<p>网络管理: networkmanager</p>
+</li>
+<li>
+<p>编程环境</p>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+rust</li>
+<li><input disabled="" type="checkbox" checked=""/>
+c</li>
+<li><input disabled="" type="checkbox" checked=""/>
+python</li>
+</ul>
+</li>
+<li>
+<p>字体: nerd, noto</p>
+</li>
+<li>
+<p>传输文件: QQ, android-file-transfer</p>
+</li>
+<li>
+<p>输入法: fcitx + 小鹤双拼</p>
+</li>
+</ul>
+<h2 id="2-an-zhuang">2 安装</h2>
+<p>Linux的安装，不外乎是官方制作一个工具完备的系统，发布其映像供用户刻录，做成安装盘。</p>
+<p>因此安装过程已然明了：确保安装盘可用 -&gt; 划分硬盘空间 -&gt; 挂载并初始化系统 -&gt; 进入系统 -&gt; 环境设置 -&gt; 创建引导 -&gt; 退出系统并卸载 -&gt; 离开安装盘</p>
+<p>官方会同时维护三个月的映像，为了以防万一，请刻录这三个月的映像。</p>
+<h3 id="2-1-que-bao-an-zhuang-pan-ke-yong">2.1 确保安装盘可用</h3>
+<ol>
+<li>sha1sum校验</li>
+<li>验证签名</li>
+<li>有时候电脑的固件可能不支持某个映像，此时你可以逐个尝试旧映像，直到成功进入为止。</li>
+<li>连接网络，有线或无线均可。</li>
+<li>校准时间。</li>
+</ol>
+<h3 id="2-2-hua-fen-ying-pan-kong-jian">2.2 划分硬盘空间</h3>
+<p>规划：引导分区(ESP)、根分区、交换分区。</p>
+<p>根据小道消息，引导分区需要2G，以满足多系统情况下多内核存储。但是，如果使用<code>grub</code>引导启动，你可以将Linux内核留在根分区的<code>/boot</code>下，而ESP的挂载点设为<code>/boot/efi</code>，内存<strong>引导文件</strong>。</p>
+<p>系统的分区最好采用<code>LVM</code>或<code>Brtfs</code>这种<strong>弹性存储</strong>文件系统，允许你未来重新规划硬盘空间。</p>
+<p>交换区最大的意义在于<strong>休眠</strong>。创建<strong>swap分区</strong>或<code>swapfile</code>均可达到目的，但两者性能孰优孰劣尚未定论。既然拥有弹性存储的能力，我就选择了较稳定方案，即swap分区。</p>
+<h4 id="2-2-1-fen-qu">2.2.1 分区</h4>
+<blockquote>
+<p>依赖: util-linux</p>
+</blockquote>
+<p>例如我的系统硬盘是<code>nvme0n1</code>，分区命令这样写：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> fdisk /dev/nvme0n1
+</span></code></pre>
+<p>使用指令<code>g</code>创建现代分区表<code>GPT</code>。</p>
+<p>先划<strong>2G</strong>的引导分区<code>nvme0n1p1</code>，并打上<code>EFI</code>标签。再把剩余空间都划出去<code>nvme0n1p2</code>。</p>
+<p>注意，分区跟文件系统乃解耦关系，划分空间不会格式化硬盘。</p>
+<h4 id="2-2-2-chuang-jian-lvm">2.2.2 创建LVM</h4>
+<blockquote>
+<p>依赖: lvm2</p>
+</blockquote>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 创建物理卷
+</span><span style="color:#e45649;">$</span><span> pvcreate /dev/nvme0n1p2
+</span><span>
+</span><span style="color:#a0a1a7;"># 创建名为 Sky 的卷组
+</span><span style="color:#e45649;">$</span><span> vgcreate Sky /dev/nvme0n1p2
+</span><span>
+</span><span style="color:#a0a1a7;"># 在 Sky 内创建名为 Swap 的逻辑卷
+</span><span style="color:#e45649;">$</span><span> lvcreate</span><span style="color:#e45649;"> -L</span><span> 32G Sky</span><span style="color:#e45649;"> -n</span><span> Swap
+</span><span>
+</span><span style="color:#a0a1a7;"># 在 Sky 内创建名为 Root 的逻辑卷
+</span><span style="color:#e45649;">$</span><span> lvcreate</span><span style="color:#e45649;"> -l</span><span> +100%</span><span style="color:#e45649;">FREE</span><span> Sky</span><span style="color:#e45649;"> -n</span><span> Root
+</span></code></pre>
+<h4 id="2-2-3-ge-shi-hua">2.2.3 格式化</h4>
+<blockquote>
+<p>依赖: util-linux, e2fsprogs, dosfstools</p>
+</blockquote>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 引导分区的文件系统为 fat32，通用
+</span><span style="color:#e45649;">$</span><span> mkfs.fat</span><span style="color:#e45649;"> -F</span><span> 32 /dev/nvme0n1p1
+</span><span>
+</span><span style="color:#a0a1a7;"># 根分区的文件系统为 ext4
+</span><span style="color:#e45649;">$</span><span> mkfs.ext4 /dev/Sky/Root
+</span><span>
+</span><span style="color:#a0a1a7;"># 交换分区
+</span><span style="color:#e45649;">$</span><span> mkswap /dev/Sky/Swap
+</span></code></pre>
+<h3 id="2-3-gua-zai-bing-chu-shi-hua-xi-tong">2.3 挂载并初始化系统</h3>
+<h4 id="2-3-1-gua-zai">2.3.1 挂载</h4>
+<blockquote>
+<p>依赖: util-linux, coreutils</p>
+</blockquote>
+<p>挂载点在文件系统中表现为<strong>目录</strong>，实质上它类似传送门。挂载点连通着两个分区，操作文件时，良好的抽象掩盖了不同分区的差异。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 先把系统分区挂上
+</span><span style="color:#e45649;">$</span><span> mount /dev/Sky/Root /mnt
+</span><span>
+</span><span style="color:#a0a1a7;"># 创建引导分区的挂载点
+</span><span style="color:#e45649;">$</span><span> mkdir</span><span style="color:#e45649;"> -p</span><span> /mnt/boot/efi
+</span><span>
+</span><span style="color:#a0a1a7;"># 挂载引导分区
+</span><span style="color:#e45649;">$</span><span> mount /dev/nvme0n1p1 /mnt/boot/efi
+</span><span>
+</span><span style="color:#a0a1a7;"># 赋予 Swap 交换能力，-v 为详细模式
+</span><span style="color:#e45649;">$</span><span> swapon</span><span style="color:#e45649;"> -v</span><span> /dev/Sky/Swap
+</span></code></pre>
+<h4 id="2-3-2-chu-shi-hua">2.3.2 初始化</h4>
+<blockquote>
+<p>依赖: util-linux, arch-install-scripts, coreutils</p>
+</blockquote>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 把基础工具包，内核，固件，neovim 安装至系统
+</span><span style="color:#e45649;">$</span><span> pacstrap /mnt base linux linux-firmware nvim
+</span><span>
+</span><span style="color:#a0a1a7;"># 生成分区挂载信息，进入系统前会自动挂载
+</span><span style="color:#e45649;">$</span><span> genfstab</span><span style="color:#e45649;"> -U</span><span> /mnt </span><span style="color:#a626a4;">&gt;</span><span> /mnt/etc/fstab
+</span><span>
+</span><span style="color:#a0a1a7;"># 校验分区的UUID，以 lsblk 为准
+</span><span style="color:#e45649;">$</span><span> lsblk</span><span style="color:#e45649;"> -f
+</span><span style="color:#e45649;">$</span><span> cat /mnt/etc/fstab
+</span></code></pre>
+<h3 id="2-4-jin-ru-xi-tong">2.4 进入系统</h3>
+<blockquote>
+<p>依赖: arch-install-scripts</p>
+</blockquote>
+<p>登入新系统，此时运行内核与网络仍属于安装盘。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> arch-chroot /mnt
+</span></code></pre>
+<h3 id="2-5-huan-jing-she-zhi">2.5 环境设置</h3>
+<h4 id="2-5-1-shi-jian">2.5.1 时间</h4>
+<blockquote>
+<p>依赖: util-linux, coreutils</p>
+</blockquote>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 时区
+</span><span style="color:#e45649;">$</span><span> ln</span><span style="color:#e45649;"> -sf</span><span> /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+</span><span>
+</span><span style="color:#a0a1a7;"># 时钟
+</span><span style="color:#e45649;">$</span><span> hwclock</span><span style="color:#e45649;"> --systohc
+</span></code></pre>
+<h4 id="2-5-2-ben-di-hua">2.5.2 本地化</h4>
+<blockquote>
+<p>依赖: glibc, neovim</p>
+</blockquote>
+<p>编辑<code>/etc/locale.gen</code>，反注释以得如下二行。</p>
+<pre data-lang="csv" style="background-color:#fafafa;color:#383a42;" class="language-csv "><code class="language-csv" data-lang="csv"><span style="color:#a626a4;">en_US.UTF-8 UTF-8
+</span><span style="color:#a626a4;">zh_CN.UTF-8 UTF-8
+</span></code></pre>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 生成本地化文件
+</span><span style="color:#e45649;">$</span><span> locale-gen
+</span><span>
+</span><span style="color:#a0a1a7;"># 因ascii码的历史地位，系统优先使用英语
+</span><span style="color:#0184bc;">echo </span><span style="color:#50a14f;">&#39;LANG=en_US.UTF-8&#39; </span><span style="color:#a626a4;">&gt;</span><span> /etc/locale.conf
+</span></code></pre>
+<h4 id="2-5-3-pacmanpei-zhi-wang-luo">2.5.3 pacman配置 &amp; 网络</h4>
+<blockquote>
+<p>依赖: pacman, neovim, systemd</p>
+</blockquote>
+<p>命名主机：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> echo </span><span style="color:#50a14f;">&#39;stele&#39; </span><span style="color:#a626a4;">&gt;</span><span> /etc/hostname
+</span></code></pre>
+<p>在<code>/etc/pacman.d/mirrorlist</code>中置顶这两行，它们是软件包的<strong>镜像源</strong>，分别位于<em>北京外国语大学</em> 和 <em>中国科技大学</em>。</p>
+<pre data-lang="ini" style="background-color:#fafafa;color:#383a42;" class="language-ini "><code class="language-ini" data-lang="ini"><span style="color:#e45649;">Server </span><span style="color:#a626a4;">= </span><span style="color:#c18401;">https://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch
+</span><span style="color:#e45649;">Server </span><span style="color:#a626a4;">= </span><span style="color:#c18401;">https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch
+</span></code></pre>
+<p>在<code>/etc/pacman.conf</code>底部添加如下内容，之后你就能从<code>archlinuxcn</code>源下载软件。</p>
+<pre data-lang="ini" style="background-color:#fafafa;color:#383a42;" class="language-ini "><code class="language-ini" data-lang="ini"><span style="color:#a626a4;">[archlinuxcn]
+</span><span style="color:#e45649;">Server </span><span style="color:#a626a4;">= </span><span style="color:#c18401;">https://mirrors.ustc.edu.cn/archlinuxcn/$arch
+</span></code></pre>
+<p>令上述操作生效。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 同步包数据库
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -Sy
+</span><span>
+</span><span style="color:#a0a1a7;"># 下载 archlinuxcn 的密钥
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> archlinuxcn-keyring
+</span></code></pre>
+<p>下载网络连接工具并部署:</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> networkmanager
+</span><span>
+</span><span style="color:#e45649;">$</span><span> sudo systemctl enable NetworkManager
+</span></code></pre>
+<h4 id="2-5-4-initramfs">2.5.4 Initramfs</h4>
+<blockquote>
+<p>依赖: mkinitcpio, neovim</p>
+</blockquote>
+<p>因为弹性存储型文件系统的关系，需要更改<code>mkinitcpio</code>的钩子，再编译一次内核。</p>
+<p>在配置文件<code>/etc/mkinitcpio.conf</code>的代码区找到<code>HOOKS</code>，依此修改其值。注意，钩子顺序是有影响的。</p>
+<pre data-lang="ini" style="background-color:#fafafa;color:#383a42;" class="language-ini "><code class="language-ini" data-lang="ini"><span>HOOKS</span><span style="color:#a626a4;">=</span><span>(base udev </span><span style="color:#a626a4;">...</span><span> block lvm2 filesystems)
+</span></code></pre>
+<p>重新编译内核：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> mkinitcpio</span><span style="color:#e45649;"> -P
+</span></code></pre>
+<h4 id="2-5-5-she-zhi-chao-ji-yong-hu-mi-ma">2.5.5 设置超级用户密码</h4>
+<blockquote>
+<p>依赖: shadow</p>
+</blockquote>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> passwd
+</span></code></pre>
+<p>接着写入密码。</p>
+<h3 id="2-6-chuang-jian-yin-dao">2.6 创建引导</h3>
+<blockquote>
+<p>依赖: grub, efibootmgr, os-prober, dosfstools, intel-ucode / amd-ucode</p>
+</blockquote>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 创建引导文件
+</span><span style="color:#e45649;">$</span><span> grub-install</span><span style="color:#e45649;"> --target</span><span style="color:#a626a4;">=</span><span>x86_64-efi</span><span style="color:#e45649;"> --efi-directory</span><span style="color:#a626a4;">=</span><span>/boot/efi</span><span style="color:#e45649;"> --bootloader-id</span><span style="color:#a626a4;">=</span><span>Arch
+</span><span>
+</span><span style="color:#a0a1a7;"># 生成 grub 配置
+</span><span style="color:#e45649;">$</span><span> grub-mkconfig</span><span style="color:#e45649;"> -o</span><span> /boot/grub/grub.cfg
+</span></code></pre>
+<p>如此，系统内核跟引导文件就分离了，引导分区出错不会威胁到位于根分区的内核。</p>
+<h3 id="2-7-tui-chu-xi-tong-bing-xie-zai">2.7 退出系统并卸载</h3>
+<blockquote>
+<p>依赖: util-linux</p>
+</blockquote>
+<p>按<code>^d</code>，即<code>ctrl-d</code>，退出系统帐号。</p>
+<p>在安装盘系统中，递归地卸载<code>/mnt</code>下所有设备。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> umount</span><span style="color:#e45649;"> -R</span><span> /mnt
+</span></code></pre>
+<h3 id="2-8-chi-kai-an-zhuang-pan">2.8 离开安装盘</h3>
+<p>关机，拔安装盘。</p>
+<h2 id="3-pei-zhi">3 配置</h2>
+<p>安装好系统不等于能直接使用，你还需要完成繁琐的配置。</p>
+<p>接下来，请直接进入系统。</p>
+<h3 id="3-1-ji-chu-gou-jian-gong-ju-bao-aur-helper">3.1 基础构建工具包 &amp; aur helper</h3>
+<blockquote>
+<p>依赖: pacman</p>
+</blockquote>
+<p><code>base-devel</code>是一个软件包组，提供了构建其他软件必需的工具。Arch连这个包组的软件都没预装，够瘦。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 先更新一下你的密钥
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -Sy</span><span> archlinux-keyring
+</span><span>
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> base-devel
+</span><span style="color:#e45649;">::</span><span> There are 24 members in group base-devel:
+</span><span style="color:#e45649;">::</span><span> Repository core
+</span><span>   </span><span style="color:#e45649;">1</span><span>) </span><span style="color:#e45649;">autoconf
+</span><span>   </span><span style="color:#e45649;">2</span><span>) </span><span style="color:#e45649;">automake
+</span><span>   </span><span style="color:#e45649;">3</span><span>) </span><span style="color:#e45649;">binutils
+</span><span>   </span><span style="color:#e45649;">4</span><span>) </span><span style="color:#e45649;">bison
+</span><span>   </span><span style="color:#e45649;">5</span><span>) </span><span style="color:#e45649;">fakeroot
+</span><span>   </span><span style="color:#e45649;">6</span><span>) </span><span style="color:#e45649;">file
+</span><span>   </span><span style="color:#e45649;">7</span><span>) </span><span style="color:#e45649;">findutils
+</span><span>   </span><span style="color:#e45649;">8</span><span>) </span><span style="color:#e45649;">flex
+</span><span>   </span><span style="color:#e45649;">9</span><span>) </span><span style="color:#e45649;">gawk
+</span><span>   </span><span style="color:#e45649;">10</span><span>) </span><span style="color:#e45649;">gcc
+</span><span>   </span><span style="color:#e45649;">11</span><span>) </span><span style="color:#e45649;">gettext
+</span><span>   </span><span style="color:#e45649;">12</span><span>) </span><span style="color:#e45649;">grep
+</span><span>   </span><span style="color:#e45649;">13</span><span>) </span><span style="color:#e45649;">groff
+</span><span>   </span><span style="color:#e45649;">14</span><span>) </span><span style="color:#e45649;">gzip
+</span><span>   </span><span style="color:#e45649;">15</span><span>) </span><span style="color:#e45649;">libtool
+</span><span>   </span><span style="color:#e45649;">16</span><span>) </span><span style="color:#e45649;">m4
+</span><span>   </span><span style="color:#e45649;">17</span><span>) </span><span style="color:#e45649;">make
+</span><span>   </span><span style="color:#e45649;">18</span><span>) </span><span style="color:#e45649;">pacman
+</span><span>   </span><span style="color:#e45649;">19</span><span>) </span><span style="color:#e45649;">patch
+</span><span>   </span><span style="color:#e45649;">20</span><span>) </span><span style="color:#e45649;">pkgconf
+</span><span>   </span><span style="color:#e45649;">21</span><span>) </span><span style="color:#e45649;">sed
+</span><span>   </span><span style="color:#e45649;">22</span><span>) </span><span style="color:#e45649;">sudo
+</span><span>   </span><span style="color:#e45649;">23</span><span>) </span><span style="color:#e45649;">texinfo
+</span><span>   </span><span style="color:#e45649;">24</span><span>) </span><span style="color:#e45649;">which
+</span><span style="color:#e45649;">Enter</span><span> a selection (default=all)</span><span style="color:#0184bc;">:
+</span><span style="color:#a0a1a7;"># 回车以下载全部
+</span></code></pre>
+<p><strong>AUR</strong>是Arch的第三方下载源，管理着软件的构建方式（如安装方式、下载地址等）。若将软件比喻为一道菜，那么AUR就是菜谱市场，而<strong>AUR helper</strong>就是找菜谱，根据菜谱做菜的人。虽然AUR常被评价“一堆野包”，但其中的软件包若有质量问题，用户仍能投票让官方人员下架此包。</p>
+<p>市面上的AUR helper种类繁多，我选择<code>paru</code>。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> paru
+</span></code></pre>
+<h3 id="3-2-jiao-hu-shell-chuang-jian-pu-tong-yong-hu">3.2 交互shell &amp; 创建普通用户</h3>
+<blockquote>
+<p>依赖: shadow, sudo, neovim</p>
+</blockquote>
+<p>bash古老且停止发展，作为交互shell不符合人体工学。为了日常的最佳体验，你需要更先进的shell。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 本体
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> zsh
+</span><span>
+</span><span style="color:#a0a1a7;"># 插件
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> zsh-autosuggestions zsh-completions zsh-syntax-highlighting
+</span></code></pre>
+<p><code>root</code>拥有任意塑造系统的能力，作日常帐户使用过于危险，你需要一个权力受限的帐户。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 用户名为door，
+</span><span style="color:#a0a1a7;"># -m 在/home下创建用户目录，-U 创建同名的用户组，-G 指定用户组纳入此用户，-s 指定登录shell
+</span><span style="color:#e45649;">$</span><span> useradd</span><span style="color:#e45649;"> -m</span><span> door</span><span style="color:#e45649;"> -U -G</span><span> wheel,video,input</span><span style="color:#e45649;"> -s</span><span> /bin/zsh
+</span><span>
+</span><span style="color:#a0a1a7;"># 设置用户密码
+</span><span style="color:#e45649;">$</span><span> passwd door
+</span></code></pre>
+<p>允许用户借用超级权限：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 临时设置默认编辑器
+</span><span style="color:#e45649;">$</span><span> export EDITOR=nvim
+</span><span>
+</span><span style="color:#a0a1a7;"># 唤出权限管理文件
+</span><span style="color:#e45649;">$</span><span> visudo
+</span></code></pre>
+<p>接着，找到此行并反注释，注释号是<code>#</code>！</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>%wheel ALL=(ALL) ALL
+</span></code></pre>
+<h3 id="3-3-tu-xing-jie-mian-zhi-chi">3.3 图形界面支持</h3>
+<blockquote>
+<p>依赖: pacman, paru</p>
+</blockquote>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 核显驱动，我用的是intel处理器
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> xf86-video-intel
+</span><span>
+</span><span style="color:#a0a1a7;"># 下载包组，获得X11窗口服务器支持
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> xorg
+</span><span>
+</span><span style="color:#a0a1a7;"># awesome windows manager
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> awesome
+</span><span>
+</span><span style="color:#a0a1a7;"># 终端，程序启动器，锁屏，截屏
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> alacritty rofi slock ksnip
+</span><span>
+</span><span style="color:#a0a1a7;"># 窗口渲染器，这玩意开发非常混乱，我优先用滚动版
+</span><span style="color:#e45649;">$</span><span> paru</span><span style="color:#e45649;"> -S</span><span> picom-git
+</span><span>
+</span><span style="color:#a0a1a7;"># nerd字体
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> nerd-fonts-complete
+</span><span>
+</span><span style="color:#a0a1a7;"># noto字体，简体中文另下
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> noto-fonts noto-fonts-emoji noto-fonts-extra
+</span><span style="color:#e45649;">$</span><span> paru</span><span style="color:#e45649;"> -S</span><span> noto-fonts-sc
+</span></code></pre>
+<h3 id="3-4-xian-shi-guan-li-qi">3.4 显示管理器</h3>
+<blockquote>
+<p>依赖: pacman, neovim</p>
+</blockquote>
+<p>显示管理器(DM)是管理用户登录的程序，普通用户经此进入桌面。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 本体，迎接器
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
+</span></code></pre>
+<p>编辑<code>/etc/lightdm/lightdm.conf</code>，设置<strong>默认迎接器</strong>。</p>
+<pre data-lang="ini" style="background-color:#fafafa;color:#383a42;" class="language-ini "><code class="language-ini" data-lang="ini"><span style="color:#a626a4;">[Seat:*]
+</span><span style="color:#a626a4;">...
+</span><span style="color:#e45649;">greeter-session</span><span style="color:#a626a4;">=</span><span>lightdm</span><span style="color:#a626a4;">-</span><span>gtk</span><span style="color:#a626a4;">-</span><span>greeter
+</span><span style="color:#a626a4;">...
+</span></code></pre>
+<p>部署<code>lightdm</code>：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> systemctl enable lightdm
+</span></code></pre>
+<p>确保<code>/home/door</code>下存在文件<code>.dmrc</code>，内含：</p>
+<pre data-lang="ini" style="background-color:#fafafa;color:#383a42;" class="language-ini "><code class="language-ini" data-lang="ini"><span style="color:#a626a4;">[Desktop]
+</span><span style="color:#e45649;">Session</span><span style="color:#a626a4;">=</span><span>awesome
+</span></code></pre>
+<p>在<code>/home/door</code>下创建<code>.xprofile</code>，写入：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;">#!/usr/bin/zsh
+</span><span style="color:#0184bc;">. </span><span style="color:#e45649;">~</span><span>/.zshrc
+</span></code></pre>
+<p>以全局应用你的个人配置。</p>
+<h3 id="3-5-shu-ru-fa">3.5 输入法</h3>
+<blockquote>
+<p>依赖: pacman</p>
+</blockquote>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 图标包
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> qt5ct kvantum-qt5
+</span><span>
+</span><span style="color:#a0a1a7;"># 本体
+</span><span style="color:#e45649;">$</span><span> pacman</span><span style="color:#e45649;"> -S</span><span> fcitx5-im fcitx5-chinese-addons fcitx5-pinyin-zhwiki
+</span></code></pre>
+<p>然后，写入全局变量：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a626a4;">export </span><span style="color:#e45649;">QT_QPA_PLATFORMTHEME</span><span style="color:#a626a4;">=</span><span style="color:#50a14f;">&#39;qt5ct&#39;
+</span><span style="color:#a626a4;">export </span><span style="color:#e45649;">M_MODULE</span><span style="color:#a626a4;">=</span><span style="color:#50a14f;">&#39;fcitx&#39;
+</span><span style="color:#a626a4;">export </span><span style="color:#e45649;">QT_IM_MODULE</span><span style="color:#a626a4;">=</span><span style="color:#50a14f;">&#39;fcitx&#39;
+</span><span style="color:#a626a4;">export </span><span style="color:#e45649;">XMODIFIERS</span><span style="color:#a626a4;">=</span><span style="color:#50a14f;">&#39;@im=fcitx&#39;
+</span><span style="color:#a626a4;">export </span><span style="color:#e45649;">SDL_IM_MODULE</span><span style="color:#a626a4;">=</span><span style="color:#50a14f;">&#39;fcitx&#39;
+</span></code></pre>
+<p>重新登入以令其生效。</p>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>Rust的文件IO - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>Rust的文件IO</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-02-01</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-file-io/#xi-tong-i-ojie-kou">系统I&#x2F;O接口</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-file-io/#huan-chong-qu-tan-xiao">缓冲区摊销</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-file-io/#huan-chong-qu-gua-yong-chang-jing">缓冲区适用场景</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="xi-tong-i-ojie-kou">系统I/O接口</h2>
+<p>程序不能直接读写文件，必须通过相关的系统API完成，即<code>read</code>和<code>write</code>两个<code>syscall</code>。</p>
+<p>它们的签名分别是：</p>
+<p><code>write(文件描述符, 待写内容的指针, 待写内容的字节数) -&gt; 写入字节数</code></p>
+<p>系统调用的时间开销很高，因为它必须从用户态切换至内核态。过于频繁的系统调用将带来性能灾难。</p>
+<h2 id="huan-chong-qu-tan-xiao">缓冲区摊销</h2>
+<p>先看无缓冲区写入操作的代码：</p>
+<pre data-lang="rust" style="background-color:#fafafa;color:#383a42;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#a626a4;">use </span><span>std::fs::File; </span><span style="color:#a0a1a7;">// 文件描述符
+</span><span style="color:#a626a4;">use </span><span>std::io::Result </span><span style="color:#a626a4;">as</span><span> IOResult; </span><span style="color:#a0a1a7;">// IO的错误处理
+</span><span style="color:#a626a4;">use </span><span>std::io::Write; </span><span style="color:#a0a1a7;">// 写操作特质，让File具备写能力
+</span><span>
+</span><span style="color:#a626a4;">fn </span><span style="color:#0184bc;">main</span><span>() -&gt; IOResult&lt;()&gt; {
+</span><span>    </span><span style="color:#a0a1a7;">// 创建文件描述符
+</span><span>    </span><span style="color:#a626a4;">let mut</span><span> file </span><span style="color:#a626a4;">= </span><span>File::create(</span><span style="color:#50a14f;">&quot;/tmp/unbuffered.txt&quot;</span><span>)</span><span style="color:#a626a4;">?</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#a0a1a7;">// 直接调用 syscall::write 3次
+</span><span>    file.</span><span style="color:#0184bc;">write</span><span>(</span><span style="color:#a626a4;">b</span><span style="color:#50a14f;">&quot;foo&quot;</span><span>)</span><span style="color:#a626a4;">?</span><span>;
+</span><span>    file.</span><span style="color:#0184bc;">write</span><span>(</span><span style="color:#a626a4;">b</span><span style="color:#50a14f;">&quot;</span><span style="color:#0997b3;">\n</span><span style="color:#50a14f;">&quot;</span><span>)</span><span style="color:#a626a4;">?</span><span>;
+</span><span>    file.</span><span style="color:#0184bc;">write</span><span>(</span><span style="color:#a626a4;">b</span><span style="color:#50a14f;">&quot;bar</span><span style="color:#0997b3;">\n</span><span style="color:#50a14f;">baz</span><span style="color:#0997b3;">\n</span><span style="color:#50a14f;">&quot;</span><span>)</span><span style="color:#a626a4;">?</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#a626a4;">return </span><span>Ok(());
+</span><span>}
+</span></code></pre>
+<p>使用写缓冲类型包装：</p>
+<pre data-lang="rust" style="background-color:#fafafa;color:#383a42;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#a626a4;">use </span><span>std::fs::File;
+</span><span style="color:#a626a4;">use </span><span>std::io::Result </span><span style="color:#a626a4;">as</span><span> IOResult;
+</span><span style="color:#a626a4;">use </span><span>std::io::Write;
+</span><span style="color:#a626a4;">use </span><span>std::io::BufWriter; </span><span style="color:#a0a1a7;">// 文件的写缓冲包装类型
+</span><span>
+</span><span style="color:#a626a4;">fn </span><span style="color:#0184bc;">main</span><span>() -&gt; IOResult&lt;()&gt; {
+</span><span>    </span><span style="color:#a0a1a7;">// 包装文件，创建写缓冲区
+</span><span>    </span><span style="color:#a626a4;">let mut</span><span> bw </span><span style="color:#a626a4;">= </span><span>BufWriter::new(File::create(</span><span style="color:#50a14f;">&quot;x.txt&quot;</span><span>)</span><span style="color:#a626a4;">?</span><span>);
+</span><span>
+</span><span>    </span><span style="color:#a0a1a7;">// BufWriter::write 把数据写入缓冲字段 Vec&lt;u8&gt;；
+</span><span>    </span><span style="color:#a0a1a7;">// 缓冲区满或文件关闭会触发 syscall::write 。
+</span><span>    bw.</span><span style="color:#0184bc;">write</span><span>(</span><span style="color:#a626a4;">b</span><span style="color:#50a14f;">&quot;foo&quot;</span><span>)</span><span style="color:#a626a4;">?</span><span>;
+</span><span>    bw.</span><span style="color:#0184bc;">write</span><span>(</span><span style="color:#a626a4;">b</span><span style="color:#50a14f;">&quot;</span><span style="color:#0997b3;">\n</span><span style="color:#50a14f;">&quot;</span><span>)</span><span style="color:#a626a4;">?</span><span>;
+</span><span>    bw.</span><span style="color:#0184bc;">write</span><span>(</span><span style="color:#a626a4;">b</span><span style="color:#50a14f;">&quot;bar</span><span style="color:#0997b3;">\n</span><span style="color:#50a14f;">baz</span><span style="color:#0997b3;">\n</span><span style="color:#50a14f;">&quot;</span><span>)</span><span style="color:#a626a4;">?</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#a626a4;">return </span><span>Ok(());
+</span><span>}
+</span></code></pre>
+<p>程序的I/O性能就提升了！读操作同理。</p>
+<h2 id="huan-chong-qu-gua-yong-chang-jing">缓冲区适用场景</h2>
+<p><strong>多次</strong>读/写文件必须<code>BufReader</code>/<code>BufWriter</code>，常见于：</p>
+<ul>
+<li>逐行读取</li>
+<li>从文件<strong>序列化</strong>数据</li>
+</ul>
+<blockquote>
+<p>参考文章</p>
+<p><a rel="noopener" target="_blank" href="https://era.co/blog/unbuffered-io-slows-rust-programs">Vincent Foley - Unbuffered I/O Can Make Your Rust Programs Much Slower</a></p>
+</blockquote>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>Unix与Dos之间互转文本格式 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>Unix与Dos之间互转文本格式</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-03-09</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/linux-unix-ft-dos/#shi-bie-ge-shi">识别格式</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/linux-unix-ft-dos/#lan-ren-zhuan-huan">懒人转换</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/linux-unix-ft-dos/#dosdan-xiang-zhuan-huan-wei-unix">Dos单向转换为Unix</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="shi-bie-ge-shi">识别格式</h2>
+<blockquote>
+<p>依赖：coreutils</p>
+</blockquote>
+<p>od命令能按八进制转出文件数据。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> od</span><span style="color:#e45649;"> -bc </span><span style="color:#a626a4;">&lt;</span><span>file</span><span style="color:#a626a4;">&gt;
+</span></code></pre>
+<p>若结果包含<code>\r \n</code>，则文件乃Dos格式；反之为Unix格式。</p>
+<h2 id="lan-ren-zhuan-huan">懒人转换</h2>
+<blockquote>
+<p>依赖：dos2unix</p>
+</blockquote>
+<p>使用<code>dos2unix</code>删除文件每一行的<code>\r</code>。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 覆盖源文件
+</span><span style="color:#e45649;">$</span><span> dos2unix </span><span style="color:#a626a4;">&lt;</span><span>dos</span><span style="color:#a626a4;">&gt;
+</span><span>
+</span><span style="color:#a0a1a7;"># 转存为新文件
+</span><span style="color:#e45649;">$</span><span> dos2unix</span><span style="color:#e45649;"> -n </span><span style="color:#a626a4;">&lt;</span><span>dos</span><span style="color:#a626a4;">&gt; &lt;</span><span>unix</span><span style="color:#a626a4;">&gt;
+</span></code></pre>
+<p><code>unix2dos</code>命令同理。</p>
+<h2 id="dosdan-xiang-zhuan-huan-wei-unix">Dos单向转换为Unix</h2>
+<blockquote>
+<p>依赖：coreutils</p>
+</blockquote>
+<p><code>tr</code>命令能转换或删除字符。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> tr</span><span style="color:#e45649;"> -d </span><span style="color:#50a14f;">&#39;\r&#39; </span><span style="color:#a626a4;">&lt; &lt;</span><span>dos</span><span style="color:#a626a4;">&gt; &gt; &lt;</span><span>unix</span><span style="color:#a626a4;">&gt;
+</span></code></pre>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

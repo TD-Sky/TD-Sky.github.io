@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>详解gitignore规则 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>详解gitignore规则</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-01-11</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/git-gitignore/#hu-lue-gui-ze">忽略规则</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/git-gitignore/#qing-chu-huan-cun">清除缓存</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="hu-lue-gui-ze">忽略规则</h2>
+<table><thead><tr><th style="text-align: center">语法</th><th style="text-align: left">解释</th></tr></thead><tbody>
+<tr><td style="text-align: center"><code>#</code></td><td style="text-align: left">向后注释</td></tr>
+<tr><td style="text-align: center"><code>*.a</code></td><td style="text-align: left">忽略所有<code>.a</code>结尾的文件</td></tr>
+<tr><td style="text-align: center"><code>!lib.a</code></td><td style="text-align: left">排除对于<code>lib.a</code>的忽略</td></tr>
+<tr><td style="text-align: center"><code>/TODO</code></td><td style="text-align: left">忽略项目根目录下的TODO文件，不包括<code>subdir/TODO</code></td></tr>
+<tr><td style="text-align: center"><code>build/</code></td><td style="text-align: left">忽略<code>build/</code>目录下的所有文件</td></tr>
+<tr><td style="text-align: center"><code>doc/*.txt</code></td><td style="text-align: left">忽略<code>doc/notes.txt</code>,但不包括<code>doc/server/arc.txt</code></td></tr>
+</tbody></table>
+<h2 id="qing-chu-huan-cun">清除缓存</h2>
+<p>如果在开发的过程中添加或者修改了.gitignore文件，那么它可能不会生效，因为一些需要忽略的文件已经加入了git的追踪列表中，可以通过清除git缓存来使新的.gitignore生效。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> git rm</span><span style="color:#e45649;"> -r --cached</span><span> .
+</span><span style="color:#e45649;">$</span><span> git add .
+</span><span style="color:#e45649;">$</span><span> git commit</span><span style="color:#e45649;"> -m </span><span style="color:#50a14f;">&#39;update .gitignore&#39;
+</span></code></pre>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

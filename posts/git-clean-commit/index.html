@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>清理git项目的commit - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>清理git项目的commit</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-03-13</time></em>
+    
+    
+    
+    <p>有时你用git只是为了版本化备份文件。随着提交次数增多，文件库逐渐积累起大量无用的备份信息。因此你必须定期清理commit。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> git checkout</span><span style="color:#e45649;"> --orphan</span><span style="color:#a626a4;">=</span><span>new
+</span><span style="color:#e45649;">$</span><span> git add .
+</span><span style="color:#e45649;">$</span><span> git commit</span><span style="color:#e45649;"> -m </span><span style="color:#50a14f;">&quot;New tree&quot;
+</span><span style="color:#e45649;">$</span><span> git branch</span><span style="color:#e45649;"> -D</span><span> main
+</span><span style="color:#e45649;">$</span><span> git branch</span><span style="color:#e45649;"> -m</span><span> main
+</span><span style="color:#e45649;">$</span><span> git push</span><span style="color:#e45649;"> -f</span><span> origin main
+</span></code></pre>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

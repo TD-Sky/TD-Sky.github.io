@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>Rust：函数、闭包、Fn特质 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>Rust：函数、闭包、Fn特质</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-02-01</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-fn/#te-zhi-yong-tu">特质用途</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-fn/#yi-lai-guan-xi">依赖关系</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-fn/#han-shu-de-te-zhi">函数的特质</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-fn/#bi-bao">闭包</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/rust-fn/#diao-yong">调用</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="te-zhi-yong-tu">特质用途</h2>
+<ul>
+<li>FnOnce：闭包持上下文变量的所有权。</li>
+<li>FnMut：闭包有通过可变引用访问上下文。</li>
+<li>Fn：闭包仅通过不可变引用访问上下文，或不访问上下文。</li>
+</ul>
+<h2 id="yi-lai-guan-xi">依赖关系</h2>
+<p><code>Fn</code> : <code>FnMut</code> : <code>FnOnce</code></p>
+<h2 id="han-shu-de-te-zhi">函数的特质</h2>
+<p>任何一个函数都实现了<code>FnOnce, FnMut, Fn, Copy</code></p>
+<h2 id="bi-bao">闭包</h2>
+<ul>
+<li>必定实现<code>FnOnce</code></li>
+<li>若闭包实现<code>Fn</code>, 则必实现<code>Copy</code>。</li>
+<li><code>move</code>会移动闭包所捕获变量到自身的<strong>匿名结构体</strong>内，但不影响该闭包实现哪些<strong>Fn特质</strong>。</li>
+<li>若闭包实现<code>Fn</code>，添加<code>move</code>，闭包的数据行为(<code>Copy/Move</code>)与捕获变量一致。</li>
+</ul>
+<p>闭包的<strong>Fn特质</strong>靠编译器的类型推理实现，每个闭包都有属于自己的匿名结构体存储捕获内容，俩闭包即使内容相同，它们的类型也相异。</p>
+<h2 id="diao-yong">调用</h2>
+<pre data-lang="rust" style="background-color:#fafafa;color:#383a42;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#a0a1a7;">// 看看 FnOnce 的源码
+</span><span style="color:#a626a4;">pub trait </span><span>FnOnce&lt;Args&gt; {
+</span><span>    </span><span style="color:#a626a4;">type </span><span>Output;
+</span><span>    </span><span style="color:#a626a4;">extern </span><span style="color:#50a14f;">&quot;rust-call&quot; </span><span style="color:#a626a4;">fn </span><span style="color:#0184bc;">call_once</span><span>(</span><span style="color:#e45649;">self</span><span>, </span><span style="color:#e45649;">args</span><span>: Args) -&gt; </span><span style="color:#a626a4;">Self::</span><span>Output;
+</span><span>}
+</span></code></pre>
+<p>当调用一个函数或闭包时，编译器首先寻找<code>call</code>调用，若无则寻<code>call_mut</code>，再无则寻<code>call_once</code>。</p>
+<blockquote>
+<p>参考文章</p>
+<p><a rel="noopener" target="_blank" href="https://nihil.cc/posts/rust_fn_traits/">Nichts Hsu - Rust 中函数与闭包与 Fn Traits 探讨</a></p>
+</blockquote>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

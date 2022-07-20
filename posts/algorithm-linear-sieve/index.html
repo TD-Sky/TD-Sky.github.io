@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>线性筛 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>线性筛</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-04-04</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/algorithm-linear-sieve/#shi-xian">实现</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/algorithm-linear-sieve/#yuan-li">原理</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/algorithm-linear-sieve/#can-kao">参考</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <p>在自然数列的前n项中寻找全部素数的算法称为<strong>素数筛</strong>。</p>
+<p>最朴素的筛法是逐项施用<strong>试除法</strong>，效率显然很低。</p>
+<p>古希腊数学家<strong>Ἐρατοσθένους</strong>发明了更快的<strong>埃氏筛</strong>，后由<strong>Euler</strong>改进成<strong>线性筛</strong>。</p>
+<p>线性筛相比埃氏筛，不会重复标记合数，时间复杂度降至<strong>O(n)</strong>。</p>
+<blockquote>
+<p>埃氏筛的时间复杂度是<strong>O(nloglogn)</strong>，推导过程详见<a rel="noopener" target="_blank" href="https://oi-wiki.org/math/number-theory/sieve/#_2">OI Wiki：筛法</a></p>
+</blockquote>
+<h2 id="shi-xian">实现</h2>
+<p>为达O(n)时间复杂度，我们恪守<strong>最小质因数筛除原则</strong>，筛除质数之倍数时便能避免重复标记。</p>
+<p>伪代码如下：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>// 给定上限to，寻找前to项的全部素数
+</span><span>fn linear_sieve(to) -&gt; Sequence {
+</span><span>    let composites = Set;
+</span><span>    let primes = Sequence;
+</span><span>
+</span><span>    // 因为总循环从2开始，合数从前往后筛，
+</span><span>    for i in 2..=to {
+</span><span>        // 我们能假设未筛除者皆为质数
+</span><span>        if i not in composites {
+</span><span>            primes.push(i);
+</span><span>        }
+</span><span>
+</span><span>        for prime in { primes 且 i * prime &lt;= to } {
+</span><span>            // 用当前项乘已知素数，标记所得合数；
+</span><span>            composites.insert(i * prime);
+</span><span>
+</span><span>*           if i % prime == 0 {
+</span><span>                break;
+</span><span>            }
+</span><span>        }
+</span><span>    }
+</span><span>
+</span><span>    return primes;
+</span><span>}
+</span></code></pre>
+<h2 id="yuan-li">原理</h2>
+<p>线性筛的核心在于，只允许合数被它的最小质因数筛除，故而编程时是不保证合数按大小次序筛除的。</p>
+<p>例如，对 a<sub>n</sub> = 4，2筛除了8，<code>*</code>处代码会立即结束内循环，以保证2能在之后乘6筛除12。</p>
+<p>为什么要在此时结束循环？因为核心原则。注意，每次内循环，都有固定的因数a<sub>n</sub>，而作为另一因数的质数按升序取用。一旦遇见因数不互质的情况，即质数p整除 a<sub>n</sub>，说明此次外循环的最小质因数筛除已达上限。</p>
+<p>重返例子 a<sub>n</sub> = 4，已知素数乘其可得8、12，但12的最小质因数是2，应该由2筛除，故内循环没必要继续。根据质数分解定理，<strong>最小质因数蕴含于当前项</strong>。</p>
+<p>合数表在前<strong>⌜n / 2⌝</strong>项便已完成，遍历前n项是为了集齐质数表。</p>
+<blockquote>
+<h2 id="can-kao">参考</h2>
+<ul>
+<li><a rel="noopener" target="_blank" href="https://zhuanlan.zhihu.com/p/100051075">Pecco - 算法学习笔记(17)：素数筛</a></li>
+<li><a rel="noopener" target="_blank" href="https://github.com/TD-Sky/run-algorithm/blob/main/combinatorics/src/permutation.rs">TD-Sky: Rust实现线性筛</a></li>
+</ul>
+</blockquote>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

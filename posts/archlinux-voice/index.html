@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>折腾ArchLinux的声卡 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>折腾ArchLinux的声卡</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-01-19</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-voice/#sheng-qia-qu-dong">声卡驱动</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-voice/#yin-pin-guan-li-qi">音频管理器</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="sheng-qia-qu-dong">声卡驱动</h2>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> sudo pacman</span><span style="color:#e45649;"> -S</span><span> sof-firmware
+</span></code></pre>
+<h2 id="yin-pin-guan-li-qi">音频管理器</h2>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 本体 及 会话/策略管理器
+</span><span style="color:#e45649;">$</span><span> sudo pacman</span><span style="color:#e45649;"> -S</span><span> pipewire wireplumber
+</span><span>
+</span><span style="color:#a0a1a7;"># 替代老牌音频调节器的前端
+</span><span style="color:#e45649;">$</span><span> sudo pacman</span><span style="color:#e45649;"> -S</span><span> pipewire-pulse pipewire-alsa pipewire-jack
+</span></code></pre>
+<p>重开终端，启用相关服务：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 启用Pipewire相关服务：
+</span><span style="color:#e45649;">$</span><span> systemctl enable pipewire</span><span style="color:#e45649;"> --user
+</span><span style="color:#e45649;">$</span><span> systemctl enable pipewire-pulse</span><span style="color:#e45649;"> --user
+</span></code></pre>
+<pre data-lang="mermaid" style="background-color:#fafafa;color:#383a42;" class="language-mermaid "><code class="language-mermaid" data-lang="mermaid"><span>graph LR;
+</span><span>
+</span><span>alsa[alsa-lib]
+</span><span>alsa-card-profiles;
+</span><span>alsa-topology-conf--&gt;alsa;
+</span><span>alsa-ucm-conf--&gt;alsa;
+</span><span>alsa--&gt;zita-alsa-pcmi;
+</span><span>alsa--&gt;alsa-plugins;
+</span><span>alsa--&gt;alsa-utils;
+</span><span>
+</span><span>pw[pipewire]
+</span><span>mgr[wireplumber]
+</span><span>pw--&gt;mgr;
+</span><span>mgr--&gt;pipewire-alsa;
+</span><span>mgr--&gt;pipewire-pulse;
+</span><span>mgr--&gt;pipewire-jack;
+</span></code></pre>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

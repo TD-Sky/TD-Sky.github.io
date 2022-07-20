@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>ArchLinux之休眠 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>ArchLinux之休眠</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-01-14</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-hibernation/#1-xiu-gai-grubde-nei-he-can-shu">1 修改grub的内核参数</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/archlinux-hibernation/#2-gei-nei-he-tian-jia-hui-fu-gou-zi">2 给内核添加恢复钩子</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <p>休眠，即挂起系统状态到硬盘。</p>
+<p>我的系统信息：</p>
+<ul>
+<li>交换区：内存的两倍大小</li>
+<li>引导程序：grub</li>
+<li>根文件系统：lvm-ext4</li>
+</ul>
+<h2 id="1-xiu-gai-grubde-nei-he-can-shu">1 修改<code>grub</code>的内核参数</h2>
+<p>编辑<code>/etc/default/grub</code>，找到<code>GRUB_CMDLINE_LINUX_DEFAULT</code>所在行，在其值末尾插入<code> resume=/dev/Sky/Swap</code>，得到：</p>
+<pre data-lang="ini" style="background-color:#fafafa;color:#383a42;" class="language-ini "><code class="language-ini" data-lang="ini"><span>GRUB_CMDLINE_LINUX_DEFAULT</span><span style="color:#a626a4;">=</span><span style="color:#50a14f;">&quot;loglevel=3 quiet resume=/dev/Sky/Swap&quot;
+</span></code></pre>
+<p>通过配置<strong>交换设备主次(major:minor)码</strong>，令系统即刻获得睡眠功能。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 查看交换分区的 MAJ:MIN
+</span><span style="color:#e45649;">$</span><span> lsblk
+</span><span style="color:#e45649;">NAME</span><span>          MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+</span><span style="color:#e45649;">nvme0n1</span><span>       259:0    0 476.9G  0 disk
+</span><span style="color:#e45649;">├─nvme0n1p1</span><span>   259:1    0     2G  0 part /boot/efi
+</span><span style="color:#e45649;">└─nvme0n1p2</span><span>   259:2    0 474.9G  0 part
+</span><span>  </span><span style="color:#e45649;">├─Sky-Root</span><span>  254:0    0 442.9G  0 lvm  /
+</span><span>  </span><span style="color:#e45649;">└─Sky-Swap </span><span style="color:#a626a4;">*</span><span>254:1</span><span style="color:#a626a4;">*</span><span>    0    32G  0 lvm  </span><span style="color:#a626a4;">[</span><span>SWAP</span><span style="color:#a626a4;">]
+</span><span>
+</span><span style="color:#a0a1a7;"># 登入超级用户
+</span><span style="color:#e45649;">$</span><span> su
+</span><span>
+</span><span style="color:#a0a1a7;"># 写入配置
+</span><span style="color:#e45649;">$</span><span> echo 254:1 </span><span style="color:#a626a4;">&gt;</span><span> /sys/power/resume
+</span></code></pre>
+<p>更新<code>grub.conf</code>文件。</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> su
+</span><span style="color:#e45649;">$</span><span> grub-mkconfig</span><span style="color:#e45649;"> -o</span><span> /boot/grub/grub.cfg
+</span></code></pre>
+<h2 id="2-gei-nei-he-tian-jia-hui-fu-gou-zi">2 给内核添加恢复钩子</h2>
+<p>编辑<code>/etc/mkinitcpio.conf</code>，在代码区找到<code>HOOKS</code>，依此修改其值：</p>
+<pre data-lang="ini" style="background-color:#fafafa;color:#383a42;" class="language-ini "><code class="language-ini" data-lang="ini"><span>HOOKS</span><span style="color:#a626a4;">=</span><span>(base udev </span><span style="color:#a626a4;">...</span><span> block lvm2 resume filesystems)
+</span></code></pre>
+<p>重新编译内核：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> su
+</span><span style="color:#e45649;">$</span><span> mkinitcpio</span><span style="color:#e45649;"> -p</span><span> linux
+</span></code></pre>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>gcc命令详解 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>gcc命令详解</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-01-11</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/c-gcc/#can-shu-he-xuan-xiang">参数和选项</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/c-gcc/#cha-ru-diao-shi-xin-xi">插入调试信息</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="can-shu-he-xuan-xiang">参数和选项</h2>
+<p>gcc通过后缀名区分文件。</p>
+<table><thead><tr><th style="text-align: left">后缀名</th><th style="text-align: left">类型</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>.c/.C .cc .cxx</code></td><td style="text-align: left">C/C++源代码文件</td></tr>
+<tr><td style="text-align: left"><code>.a</code></td><td style="text-align: left">由目标文件构成的档案库文件</td></tr>
+<tr><td style="text-align: left"><code>.h</code></td><td style="text-align: left">程序所包含的头文件</td></tr>
+<tr><td style="text-align: left"><code>.i/.ii</code></td><td style="text-align: left">经过预处理的C/C++源代码文件</td></tr>
+<tr><td style="text-align: left"><code>.m</code></td><td style="text-align: left">Objective-C源代码文件</td></tr>
+<tr><td style="text-align: left"><code>.o</code></td><td style="text-align: left">编译后的可执行目标文件，机器码</td></tr>
+<tr><td style="text-align: left"><code>.s</code></td><td style="text-align: left">汇编语言源代码文件</td></tr>
+<tr><td style="text-align: left"><code>.S</code></td><td style="text-align: left">经过预编译的汇编语言源代码文件</td></tr>
+</tbody></table>
+<hr />
+<table><thead><tr><th style="text-align: center">阶段</th><th style="text-align: center">选项</th><th style="text-align: center">输入</th><th style="text-align: center">输出</th></tr></thead><tbody>
+<tr><td style="text-align: center">预处理</td><td style="text-align: center">-E</td><td style="text-align: center">.c</td><td style="text-align: center">.i</td></tr>
+<tr><td style="text-align: center">编译</td><td style="text-align: center">-S</td><td style="text-align: center">.i</td><td style="text-align: center">.s</td></tr>
+<tr><td style="text-align: center">汇编</td><td style="text-align: center">-c</td><td style="text-align: center">.s</td><td style="text-align: center">.o</td></tr>
+<tr><td style="text-align: center">链接</td><td style="text-align: center"></td><td style="text-align: center">.o + 库文件</td><td style="text-align: center">.out</td></tr>
+</tbody></table>
+<hr />
+<table><thead><tr><th style="text-align: left">选项</th><th style="text-align: left">描述</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>-o filename</code></td><td style="text-align: left">编译时指定可执行目标文件名</td></tr>
+<tr><td style="text-align: left"><code>-g</code></td><td style="text-align: left">在生成的可执行文件中包含标准调试信息</td></tr>
+<tr><td style="text-align: left"><code>-v</code></td><td style="text-align: left">打印编译器内部各编译阶段的命令行信息和编译器版本号</td></tr>
+<tr><td style="text-align: left"><code>-I dir</code></td><td style="text-align: left">在头文件的搜索路径列表中添加dir目录</td></tr>
+<tr><td style="text-align: left"><code>-L dir</code></td><td style="text-align: left">在库文件的搜索路径列表中添加dir目录</td></tr>
+<tr><td style="text-align: left"><code>-static</code></td><td style="text-align: left">链接静态库</td></tr>
+<tr><td style="text-align: left"><code>-llibrary</code></td><td style="text-align: left">链接名为library的库文件</td></tr>
+<tr><td style="text-align: left"><code>Dmacro</code></td><td style="text-align: left">定义指定的宏，使其可通过源代码中的#ifdef进行检验</td></tr>
+<tr><td style="text-align: left"><code>-O/-O2/-O3</code></td><td style="text-align: left">将优化状态打开，该选项不能与-g联合使用</td></tr>
+<tr><td style="text-align: left"><code>-Wall</code></td><td style="text-align: left">在发生警告时取消编译操作</td></tr>
+<tr><td style="text-align: left"><code>-Werror</code></td><td style="text-align: left">在发生警告时取消编译操作</td></tr>
+<tr><td style="text-align: left"><code>-w</code></td><td style="text-align: left">禁止所有的报警</td></tr>
+<tr><td style="text-align: left"><code>-pedantic</code></td><td style="text-align: left">严格要求符合ANSI标准，生成相应的警告信息</td></tr>
+<tr><td style="text-align: left"><code>-std=c__</code></td><td style="text-align: left">选择C语言的标准</td></tr>
+</tbody></table>
+<h2 id="cha-ru-diao-shi-xin-xi">插入调试信息</h2>
+<p><code>gcc -g</code>：在编译时插入不同等级的调试信息。生成的程序只能用于gdb调试，无法被其他调试器接受。</p>
+<ul>
+<li>g1：扩展的符号表、外部变量信息 ；仅用于<strong>回溯跟踪</strong>和<strong>堆栈转储</strong></li>
+<li>g2：g1 + 行号、局部变量信息</li>
+<li>g3：g2 + 源代码中定义的宏</li>
+</ul>
+<p>调试信息包含了程序中每个变量的类型和在可执行文件中的地址映射以及源代码行号。</p>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

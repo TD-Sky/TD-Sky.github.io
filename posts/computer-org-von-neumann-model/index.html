@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>冯诺伊曼架构 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>冯诺伊曼架构</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-03-12</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-von-neumann-model/#ji-suan-ji-cheng-xu">计算机程序</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-von-neumann-model/#nei-cun">内存</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-von-neumann-model/#ji-suan-dan-yuan">计算单元</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/computer-org-von-neumann-model/#kong-zhi-dan-yuan">控制单元</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-von-neumann-model/#zhi-ling-chu-li">指令处理</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-von-neumann-model/#zhi-ling-zhou-qi">指令周期</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-von-neumann-model/#zhong-zhi-cheng-xu">中止程序</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-von-neumann-model/#shu-ju-lu-jing">数据路径</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="ji-suan-ji-cheng-xu">计算机程序</h2>
+<p>计算机程序是一系列指令。每种指令都精确定义一项计算机需要执行的工作。</p>
+<p>冯·诺伊曼架构实现了此机制：</p>
+<ul>
+<li>内存：程序所在；程序的数据来源。</li>
+<li>计算单元：执行指令。</li>
+<li>输入设备：程序的数据来源。</li>
+<li>输出设备：输出程序执行结果。</li>
+<li>控制单元：决定指令的执行顺序。</li>
+</ul>
+<h3 id="nei-cun">内存</h3>
+<p>读取内存某一位置的内容，先加载其地址到内存地址寄存器(<strong>MAR</strong>)，再去内存中寻址。目标内容最终加载到内存数据寄存器(<strong>MDR</strong>)。</p>
+<p>写入值到内存某一位置，先加载目标位置的地址到MAR，加载待写值到MDR，再去内存种寻址。最终，内存会把MDR内容写入MAR所含地址指向的位置。</p>
+<h3 id="ji-suan-dan-yuan">计算单元</h3>
+<p>现代计算机的计算单元已变得成熟而复杂，为各类型计算都配备了专门的子单元。为简单起见，目前只学习算术逻辑单元(<strong>ALU</strong>)。</p>
+<p>ALU可执行的操作有：ADD, SUBTRACT, 逻辑运算。ALU按<strong>字</strong>(Word)处理数据，例如ADD接收两字并产出一字。</p>
+<blockquote>
+<p>当今处理器的字长多为64比特。LC-3的字长是16比特。</p>
+</blockquote>
+<p>为方便连续运算，计算单元有一系列寄存器作为计算结果中转站。寄存器的大小一般等于ALU可处理数据的大小，即一字。</p>
+<h3 id="kong-zhi-dan-yuan">控制单元</h3>
+<p>指令是逐步执行的，control unit keeps track of both where we are within the process of executing the program and where we are in the process of executing each instruction.</p>
+<p>指令寄存器(<strong>IR</strong>)保存当前正在执行的指令；<strong>指令指针</strong>保存下一条指令的地址，出于历史原因，此寄存器又称程序计数器(<strong>PC</strong>)。</p>
+<h2 id="zhi-ling-chu-li">指令处理</h2>
+<p>冯·诺伊曼架构的核心思想是：</p>
+<ol>
+<li>程序和数据都是内存中的二进制码。</li>
+<li>控制单元一次执行一条指令。</li>
+</ol>
+<p>指令执行的构成：</p>
+<ul>
+<li>操作码：表示指令该做什么。</li>
+<li>操作对象：指令所操作的数据。</li>
+</ul>
+<p>指令类型即操作码类型，主要分成三类：</p>
+<ul>
+<li>操作：操作数据，如LC-3的ADD, AND, NOT。</li>
+<li>数据移动：在计算单元、内存、IO设备之间移动信息。</li>
+<li>控制：变更指令的执行顺序。</li>
+</ul>
+<p>某些ISA另有用于特殊途径的指令类型。</p>
+<p>LC-3的指令为一字长，从右至左升序编码。Ins[15:12]是操作码，Ins[11:0]指出操作对象所在，其中有一个保留位。</p>
+<h2 id="zhi-ling-zhou-qi">指令周期</h2>
+<p>指令周期有六个阶段，每一阶段需要<strong>≥0</strong>步完成。一步耗时<strong>≥1</strong>个机器周期。</p>
+<blockquote>
+<p>并非所有指令都必须经历以下六个阶段</p>
+</blockquote>
+<ol>
+<li>
+<p><strong>FETCH</strong>：从内存获取下一指令，将其加载到IR。</p>
+<p>(1) 使用PC的信息，依寻址模式加载到MAR。同时<code>PC += 1</code>。</p>
+<p>(2) 访问内存，加载下一指令到MDR。</p>
+<p>(3) 加载MDR内容到IR。</p>
+</li>
+<li>
+<p><strong>DECODE</strong>：查看指令，弄清楚微架构应该干嘛。解码器会处理指令的操作码。</p>
+</li>
+<li>
+<p><strong>EVALUATE ADDRESS</strong>：根据指令信息计算出所需地址。</p>
+<p>像ADD和AND这种，数据IO先由寄存器处理，不直接求地址的，没有此阶段。</p>
+</li>
+<li>
+<p><strong>FETCH OPERANDS</strong>：获取操作对象。</p>
+<p>比如，拿着地址去读取内存、读取寄存器信息。</p>
+<p>当下许多微处理器将此阶段与EXECUTE合并了。</p>
+</li>
+<li>
+<p><strong>EXECUTE</strong>：执行指令。</p>
+</li>
+<li>
+<p><strong>STORE RESULT</strong>：存储结果至预定位置。</p>
+</li>
+</ol>
+<h2 id="zhong-zhi-cheng-xu">中止程序</h2>
+<p>控制单元调度一次的时间称作<strong>机器周期</strong>，它由<strong>时钟</strong>决定，故又称<strong>时钟周期</strong>。</p>
+<p>例如，<em>3.1 GHz Intel Core i7</em> 每秒可执行 <em>31.0</em> 亿次调度。</p>
+<p>看出来了吧？计算机的控制系统是有限状态机！通过不断执行指令，它不停地转变状态。若想停止转变，须停下指令周期，即停止时钟。</p>
+<p>时钟信号由<strong>晶体振荡器</strong>(crystal oscillator)生成，具有周期性。此信号<strong>与</strong>运行(RUN)锁存器的输出，得到真正的时钟信号。</p>
+<p>利用TRAP中止程序，实则清零运行锁存器。中断任务完成后，指令周期由外部命令恢复。</p>
+<h2 id="shu-ju-lu-jing">数据路径</h2>
+<p>在数据路径中，控制信号由有限状态机发出。</p>
+<p>粗黑色大箭头是<strong>全局总线</strong>，负责传输1字长的数据。元件经由<strong>三态设备</strong>(三角形)向总线输送信息，保证一次只有一个设备向总线提供信息。</p>
+<p>储存值到内存时，控制信号断言WE信号，以写入MDR的值到MAR所指位置。</p>
+<p>ALU、寄存器文件 —— 见书P175。</p>
+<p>PC的输入来源是PCMUX。PCMUX是一种 <em>3入1出</em> 的元件，输入分别来自总线、PC相关寻址、PC自增。</p>
+<p>MARMUX控制MAR的输入源。MARMUX是一种 <em>2入1出</em> 的元件，输入分别来自陷阱矢量和寻址模式，输出流向全局总线。</p>
+<p><img
+    src="LC-3_data_path.png"
+    alt="LC-3的数据路径"
+    align="middle"
+/></p>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>生成全排列 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>生成全排列</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-03-22</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/algorithm-permutation/#shi-xian">实现</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/algorithm-permutation/#yuan-li">原理</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-permutation/#yan-shi">演示</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/algorithm-permutation/#can-kao">参考</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <p>在学习组合数学时，研究重点一般在组合数上，对排列组合本身却不甚关心。毕竟所操作集合动则数十个元素，手算是不现实的。</p>
+<p>然而，编程要求我们重视组合本身。因为许多问题可以通过遍历全排列解决，计算机科学家必须设计可行的全排列生成算法。</p>
+<p>幸运的是，此算法业已诞生，它能够按字典序递增生成全排列。</p>
+<h2 id="shi-xian">实现</h2>
+<p>首先必须明确一点，我们所说的<strong>排列</strong>，其输入乃集合。集合具备元素互异性，经排列操作所得数组集合同样元素互异。</p>
+<p>当然组合学不可能停留在如此狭窄的定义上。相当多问题里，排列组合的根本不是集合，元素会重复出现（密码生成），抑或元素分类存在（单词重组）。不过这些已经超出这篇文章的范畴了。我们讨论最简单情况——<strong>全排列</strong>。</p>
+<p>以下伪代码接收一个互异数组，并生成字典序+1的全排列。</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>fn next_permutation(arr)
+</span><span>{
+</span><span>    assert!( arr 是 长度≥1，非降序排列的数组 );
+</span><span>
+</span><span>    let rmost_lt = { 数组最右侧，满足小于关系的下标 };
+</span><span>
+</span><span>    let supermum = { 位于 rmost_lt 右侧的最小上确界之下标 };
+</span><span>
+</span><span>    arr.swap(rmost_lt, supermum);
+</span><span>
+</span><span>*   for (head, tail) in [ arr 的rmost_lt 右侧部分 ]
+</span><span>    {
+</span><span>        arr.swap(head, task);
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>注意<code>*</code>部分，它通过交换对称位置的元素，按升序排列<code>rmost_lt</code>右侧元素。</p>
+<h2 id="yuan-li">原理</h2>
+<p>关键点：从目前全排列切入，思考为什么它会比前一全排列的字典序大1。</p>
+<p>如何定义字典序大小？这是相对的，升序最小，降序最大。</p>
+<p>可以相差1是什么情况？例如，<em>362541</em> 的字典序比 <em>364125</em> 小一，原因有二：</p>
+<ul>
+<li><em>364125</em> 比 <em>362541</em> 字典序更大；</li>
+<li>没有其它排列的字典序小于 <em>364125</em> 而大于 <em>362541</em>。</li>
+</ul>
+<p>所以，生成新排列时，应从右往左重排，因为字典序由左即右比较得出。</p>
+<p>回想一下判断数列单调性算法，它只要遇到首个相反次序就能断言单调性。同理，我们希望全排列朝着降序的方向变化，必须右起降序化，但局部恢复升序，为接下来的降序化创造机会。</p>
+<h3 id="yan-shi">演示</h3>
+<p>再举 <em>362541</em> 为例，<strong>索引起点为0</strong>，a[3..6]已经局部字典序最大，所以选定索引2。</p>
+<p>a<sub>2</sub>与它的最小上界互换，<strong>这样交换不会破坏右边降序</strong>。因为位置2增大，字典序变大了。数组变为 <em>364521</em>。</p>
+<p>为了 <em>之后保持</em> <code>a[0..=2] = 364</code> <em>同时仍可右起降序化</em> ，就将2右边升序化，<strong>通过交换右部分首位两端元素实现</strong>。由于右边为降序，这是可行的。最终数组变为 <em>364125</em>。</p>
+<blockquote>
+<h2 id="can-kao">参考</h2>
+<ul>
+<li><a rel="noopener" target="_blank" href="https://github.com/TD-Sky/run-algorithm/blob/main/combinatorics/src/permutation.rs">TD-Sky: Rust实现全排列生成器</a></li>
+</ul>
+</blockquote>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

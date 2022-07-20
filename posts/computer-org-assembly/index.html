@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>汇编工具 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>汇编工具</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-01-11</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-assembly/#as">as</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-assembly/#objdump">objdump</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="as">as</h2>
+<ul>
+<li>
+<p>功能：把<strong>汇编代码(.s)<strong>翻译成</strong>编译单元(.o)</strong>。</p>
+</li>
+<li>
+<p>示意：<code>assembly.s</code>  --&gt;  <code>object.o</code></p>
+</li>
+<li>
+<p>使用：</p>
+</li>
+</ul>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> as assembly.s</span><span style="color:#e45649;"> -o</span><span> object.o
+</span></code></pre>
+<h2 id="objdump">objdump</h2>
+<ul>
+<li>
+<p>功能：反汇编。</p>
+</li>
+<li>
+<p>示意：<code>object.o</code> --&gt; <code>assembly.s</code></p>
+</li>
+<li>
+<p>使用：</p>
+</li>
+</ul>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 反汇编
+</span><span style="color:#e45649;">$</span><span> objdump</span><span style="color:#e45649;"> -d</span><span> object.o
+</span><span>
+</span><span style="color:#a0a1a7;"># 事先插入调试信息，可以反汇编时插入源代码
+</span><span style="color:#e45649;">$</span><span> gcc</span><span style="color:#e45649;"> -g</span><span> src.c
+</span><span>
+</span><span style="color:#a0a1a7;"># 反汇编目标文件
+</span><span style="color:#e45649;">$</span><span> objdump</span><span style="color:#e45649;"> -dS</span><span> object.o
+</span><span>
+</span><span style="color:#a0a1a7;"># 反汇编可执行文件
+</span><span style="color:#e45649;">$</span><span> objdump</span><span style="color:#e45649;"> -dS</span><span> program
+</span><span>
+</span><span style="color:#a0a1a7;"># 此命令输出至STDOUT，使用 &gt; 重定向
+</span><span style="color:#e45649;">$</span><span> objdump</span><span style="color:#e45649;"> -d</span><span> object.o </span><span style="color:#a626a4;">&gt;</span><span> assembly.dis
+</span></code></pre>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

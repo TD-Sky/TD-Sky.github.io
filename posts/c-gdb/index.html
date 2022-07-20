@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>gdb命令详解 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>gdb命令详解</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-01-11</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/c-gdb/#zhu-yao-gong-neng">主要功能</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/c-gdb/#zi-ming-ling-yi-lan">子命令一览</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/c-gdb/#break">break</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/c-gdb/#display">display</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/c-gdb/#list">list</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="zhu-yao-gong-neng">主要功能</h2>
+<ul>
+<li>设置断点（断点可以是条件表达式），使程序在指定的代码行上暂停执行，以便观察</li>
+<li>单步执行程序</li>
+<li>查看程序中变量值的变化</li>
+<li>动态改变程序的执行环境</li>
+<li>分析崩溃程序产生的core文件</li>
+</ul>
+<h2 id="zi-ming-ling-yi-lan">子命令一览</h2>
+<table><thead><tr><th style="text-align: center">命令</th><th style="text-align: left">描述</th></tr></thead><tbody>
+<tr><td style="text-align: center"><code>file</code></td><td style="text-align: left">装入想要调试的可执行文件</td></tr>
+<tr><td style="text-align: center"><code>run</code></td><td style="text-align: left">执行当前被调试的程序</td></tr>
+<tr><td style="text-align: center"><code>kill</code></td><td style="text-align: left">终止正在调试的程序</td></tr>
+<tr><td style="text-align: center"><code>step/s</code></td><td style="text-align: left">执行一行源代码而且进入函数内部</td></tr>
+<tr><td style="text-align: center"><code>next/n</code></td><td style="text-align: left">执行一行源代码但不进入函数内部</td></tr>
+<tr><td style="text-align: center"><strong>break</strong></td><td style="text-align: left">在代码里设置断点，使程序执行至此时被挂起</td></tr>
+<tr><td style="text-align: center"><code>print/p</code></td><td style="text-align: left">打印表达式的值；打印内存中某变量开始的一段连续区域的值；按相应语法对变量赋值</td></tr>
+<tr><td style="text-align: center"><strong>display</strong></td><td style="text-align: left">设置自动显示的表达式，当程序停住或单步跟踪时，它们会自动显示其当前值</td></tr>
+<tr><td style="text-align: center"><strong>list</strong></td><td style="text-align: left">显示当前行后面的源代码</td></tr>
+<tr><td style="text-align: center"><code>quit</code></td><td style="text-align: left">退出</td></tr>
+<tr><td style="text-align: center"><code>watch</code></td><td style="text-align: left">监视一个变量的值</td></tr>
+<tr><td style="text-align: center"><code>backtrace</code></td><td style="text-align: left">回溯跟踪</td></tr>
+<tr><td style="text-align: center"><code>frame n</code></td><td style="text-align: left">定位到发生错误的代码段，n为回溯结果中的行号</td></tr>
+<tr><td style="text-align: center"><code>examine</code></td><td style="text-align: left">查看内存地址中的值</td></tr>
+<tr><td style="text-align: center"><strong>jump</strong></td><td style="text-align: left">使程序按 地址/偏移量/行号 跳转执行</td></tr>
+<tr><td style="text-align: center"><code>signal</code></td><td style="text-align: left">产生信号量给被调试程序，如中断信号^c</td></tr>
+<tr><td style="text-align: center"><code>return</code></td><td style="text-align: left">强制当前函数返回，参数为<code>&lt;exp&gt;</code>;</td></tr>
+<tr><td style="text-align: center"><code>call</code></td><td style="text-align: left">强制调用某个函数，参数为<code>&lt;exp&gt;</code>;</td></tr>
+<tr><td style="text-align: center"><code>make</code></td><td style="text-align: left">使用户不退出即可重新产生可执行文件</td></tr>
+<tr><td style="text-align: center"><code>shell</code></td><td style="text-align: left">使用户不退出即可执行shell命令</td></tr>
+<tr><td style="text-align: center"><code>info line</code></td><td style="text-align: left">查看源代码在内存中的地址，参数有<code>&lt;linenum&gt;</code>,<code>&lt;function&gt;</code> (前面可加文件名)</td></tr>
+</tbody></table>
+<h2 id="break">break</h2>
+<table><thead><tr><th style="text-align: center">参数</th><th style="text-align: left">描述</th></tr></thead><tbody>
+<tr><td style="text-align: center"><code>&lt;function&gt;</code></td><td style="text-align: left">在进入指定函数时停住</td></tr>
+<tr><td style="text-align: center"><code>&lt;linenum&gt;</code></td><td style="text-align: left">在指定行号停住</td></tr>
+<tr><td style="text-align: center"><code>+offset</code></td><td style="text-align: left">在当前行号的前offset行停住</td></tr>
+<tr><td style="text-align: center"><code>-offset</code></td><td style="text-align: left">在当前行号的后offset行停住</td></tr>
+<tr><td style="text-align: center"><code>filename:linenum</code></td><td style="text-align: left">在源文件的linenum行停住</td></tr>
+<tr><td style="text-align: center"><code>filename:function</code></td><td style="text-align: left">在源文件的function函数入口停住</td></tr>
+<tr><td style="text-align: center"><code>*address</code></td><td style="text-align: left">在程序运行的内存地址处停住</td></tr>
+<tr><td style="text-align: center"><code>if &lt;condition&gt;</code></td><td style="text-align: left">在条件成立时停住</td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left">在下一指令处停住</td></tr>
+</tbody></table>
+<h2 id="display">display</h2>
+<table><thead><tr><th style="text-align: center">使用</th><th style="text-align: left">描述</th></tr></thead><tbody>
+<tr><td style="text-align: center"><code>display /&lt;format&gt; &lt;exp&gt;</code></td><td style="text-align: left">（以某种格式）自动显示表达式的值</td></tr>
+<tr><td style="text-align: center"><code>display /&lt;format&gt; &lt;address&gt;</code></td><td style="text-align: left">（以某种格式）自动显示某地址内的值</td></tr>
+<tr><td style="text-align: center"><code>undisplay &lt;dnums&gt;</code></td><td style="text-align: left">按编号取消自动显示；用空格分隔，用<code>-</code>连续选择</td></tr>
+<tr><td style="text-align: center"><code>disable/unable display &lt;dnums&gt;</code></td><td style="text-align: left">使自动显示 失效/恢复</td></tr>
+<tr><td style="text-align: center"><code>info display</code></td><td style="text-align: left">查看display设置的自动显示信息的表格</td></tr>
+</tbody></table>
+<blockquote>
+<p>格式，一般为进制数</p>
+</blockquote>
+<h2 id="list">list</h2>
+<table><thead><tr><th style="text-align: center">参数</th><th style="text-align: left">描述</th></tr></thead><tbody>
+<tr><td style="text-align: center"><code>&lt;linenum&gt;</code></td><td style="text-align: left">显示第linenum行周围的源代码</td></tr>
+<tr><td style="text-align: center"><code>&lt;function&gt;</code></td><td style="text-align: left">显示名为function的函数源代码</td></tr>
+<tr><td style="text-align: center"><code>-</code></td><td style="text-align: left">显示当前上下总共10行源代码，一般<code>[-5,+5]</code></td></tr>
+<tr><td style="text-align: center"><code>&lt;first&gt;,&lt;last&gt;</code></td><td style="text-align: left">显示从 first 行到 last 行之间的源代码</td></tr>
+<tr><td style="text-align: center"><code>,&lt;last&gt;</code></td><td style="text-align: left">显示从当前行到last行之间的源代码</td></tr>
+<tr><td style="text-align: center"><code>+</code></td><td style="text-align: left">向后显示源代码</td></tr>
+<tr><td style="text-align: center"><code>set listsize &lt;count&gt;</code></td><td style="text-align: left">设置一次显示源代码的行数</td></tr>
+<tr><td style="text-align: center"><code>show listsize</code></td><td style="text-align: left">查看当前 listsize 的设置</td></tr>
+</tbody></table>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

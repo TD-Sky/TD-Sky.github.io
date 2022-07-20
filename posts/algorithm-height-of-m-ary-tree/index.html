@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>M叉树之高 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          // customised options
+          // • auto-render specific keys, e.g.:
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          // • rendering keys, e.g.:
+          throwOnError : false
+        });
+    });
+</script>
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>M叉树之高</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-04-23</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/algorithm-height-of-m-ary-tree/#di-gui-shu">递归树</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/algorithm-height-of-m-ary-tree/#mcha-shu">M叉树</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-height-of-m-ary-tree/#xie-zi-de-shu-liang">叶子的数量</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/algorithm-height-of-m-ary-tree/#shu-de-gao-du">树的高度</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="di-gui-shu">递归树</h2>
+<p>M叉平衡树之高贯穿算法分析。正因其精妙的性质，算法复杂度才出现对数。</p>
+<p>假设我们有一个递归函数，其函数体中恒有 $M$ 处递归调用，且<strong>栈深有限</strong>。若以时间为轴，函数栈指针所在函数为状态，则沿着时间轴积累<strong>函数栈最高</strong>的情况，递归函数的<strong>时序轨迹</strong>会形成一颗<strong>平衡满M叉树</strong>。</p>
+<p>事实上，函数递归通常伴随着剪枝，递归树不总是平衡的。但只要是树结构，我们都能估计或精算其高度。</p>
+<h2 id="mcha-shu">M叉树</h2>
+<h3 id="xie-zi-de-shu-liang">叶子的数量</h3>
+<ul>
+<li>
+<p>命题：高为 $H$ 的M叉树最多有 $M^{H}$ 个叶子。</p>
+</li>
+<li>
+<p>证明：</p>
+<p>思路是对高度进行数学归纳。</p>
+<p>首先来看高为 $1$ 的情况：树只有根，以及至多 $M$ 片叶子。故得<strong>基底步骤</strong>：高为 $1$ 的M叉树最多有 $M^{1} = M$ 片叶子。</p>
+<p><strong>归纳假设</strong>：高为 $H$ 的M叉树最多有 $M^{H}$ 片叶子。</p>
+<p>设<strong>T</strong>为满足归纳假设的树，则<strong>T</strong>的叶子通常也是其子树的叶子，而子树通过分别删减它们的根与<strong>T</strong>根之间的边产生。</p>
+<p><img
+      src="inductive_step.png"
+      alt="归纳步骤"
+      align="middle"
+  /></p>
+<p>每棵子树的高都不大于 $H - 1$，根据归纳假设，每棵最多有 $M^{H-1}$ 片叶子。</p>
+<p>因为最多有 $M$ 棵子树，且每棵最多有 $M^{H-1}$ 片叶子，所以<strong>T</strong>最多有 $M \cdot M^{H-1} = M^{H}$ 片叶子。</p>
+</li>
+</ul>
+<h3 id="shu-de-gao-du">树的高度</h3>
+<ul>
+<li>
+<p>命题：</p>
+<ul>
+<li>
+<p>若一颗M叉树有 $L$ 片叶子，则其高 $H \geq \lceil \log_{M}{L} \rceil$ ；</p>
+</li>
+<li>
+<p>若M叉树为满且平衡，则其高 $H = \lceil \log_{M}{L} \rceil$ 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>证明：</p>
+<p>已知 $L \leq M^{H}$ ，对不等式两侧取对数可得 $\log_{M}{L} \leq H$ ，因为 $H$ 为整数，所以 $H \geq \lceil \log_{M}{L} \rceil$ 。</p>
+<p>对于平衡满M叉树，每片叶子都在第 $H - 1$ 或 $H$ 层。高为 $H$ 的树，<strong>第 $H$ 层至少有一片叶子</strong>，这意味着<strong>平衡满二叉树</strong>的叶子数必定多于 $M^{H-1}$ ，即 $M^{H-1} &lt; L \leq M^{H}$ 。对不等式两侧取对数，可得 $H -1 &lt; log_{M}{L} \leq H$ 。因此 $H = \lceil \log_{M}{L} \rceil$ 。</p>
+</li>
+</ul>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

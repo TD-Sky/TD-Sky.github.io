@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>链接工具 - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>链接工具</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-01-11</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-link/#ld">ld</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-link/#jing-tai-lian-jie">静态链接</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/computer-org-link/#dong-tai-lian-jie">动态链接</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <h2 id="ld">ld</h2>
+<ul>
+<li>
+<p>功能：链接<strong>编译单元(.o)</strong>，生成<strong>可执行文件</strong>。</p>
+</li>
+<li>
+<p>示意：<code>object_1.o  object_2.o  ......</code>  --&gt;  <code>program</code></p>
+</li>
+<li>
+<p>使用：</p>
+</li>
+</ul>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> ld object_1.o object_2.o ...</span><span style="color:#e45649;"> -o</span><span> program
+</span></code></pre>
+<ul>
+<li>gcc的链接等价于：</li>
+</ul>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 不同平台可能不一样；此处仅给出了主要的链接目标
+</span><span style="color:#e45649;">$</span><span> ld /usr/lib/crt1.o /usr/lib/crti.o main.o</span><span style="color:#e45649;"> -lc -dynamic-linker</span><span> /lib/ld-linux.so.2
+</span></code></pre>
+<p>说明</p>
+<ol>
+<li><code>crt1.o</code>内提供了<code>_start</code>入口点，它会调用<code>main</code>函数。</li>
+<li><code>-lc</code>表示需要链接<code>libc</code>库。</li>
+<li><code>-dynamic-linker</code>指定动态链接器<code>/lib/ld-linux.so.2</code></li>
+</ol>
+<h2 id="jing-tai-lian-jie">静态链接</h2>
+<ul>
+<li>例子：将多个<strong>编译单元</strong>打包成静态库，并链接使用。</li>
+</ul>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> ar rs libstack.a stack.o push.o pop.o is_empty.o
+</span><span style="color:#e45649;">ar:</span><span> creating libstack.a
+</span><span>
+</span></code></pre>
+<p>上述命令等价于</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> ar r libstack.a stack.o push.o pop.o is_empty.o
+</span><span>
+</span><span style="color:#a0a1a7;"># 为静态库创建索引
+</span><span style="color:#e45649;">$</span><span> ranlib libstack.a
+</span><span>
+</span><span style="color:#a0a1a7;"># 静态链接
+</span><span style="color:#e45649;">$</span><span> gcc main.c</span><span style="color:#e45649;"> -L</span><span> .</span><span style="color:#e45649;"> -l</span><span> stack</span><span style="color:#e45649;"> -I</span><span> stack</span><span style="color:#e45649;"> -o</span><span> main
+</span></code></pre>
+<ul>
+<li>说明</li>
+</ul>
+<ol>
+<li><code>gcc</code>的选项：<code>-L</code>指定库文件目录，<code>-l</code>告示库名(<code>stack</code>意为<code>libstack</code>)，<code>-I</code>指定头文件目录。</li>
+<li><code>gcc -print-search-dirs</code>查看编译器默认查找的目录。</li>
+<li>编译器优先查找库名共享库<code>libstack.so</code>，然后再查找静态库<code>libstack.a</code>。如果只需链接静态库，则使用选项<code>static</code>。</li>
+</ol>
+<ul>
+<li>为什么要用静态库？<strong>链接器可以只取静态库中需要部分来链接</strong>。</li>
+</ul>
+<h2 id="dong-tai-lian-jie">动态链接</h2>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#a0a1a7;"># 使用 -f 跟随 编译选项 PIC ，生成 位置无关码
+</span><span style="color:#e45649;">$</span><span> gcc</span><span style="color:#e45649;"> -c</span><span> fPIC stack.c push.c pop.c is_empty.c
+</span><span>
+</span><span style="color:#a0a1a7;"># 打包生成 共享库
+</span><span style="color:#e45649;">$</span><span> gcc</span><span style="color:#e45649;"> -shared</span><span> stack.o push.o pop.o is_empty.o</span><span style="color:#e45649;"> -o</span><span> libstack.so
+</span><span>
+</span><span style="color:#a0a1a7;"># 动态链接
+</span><span style="color:#e45649;">$</span><span> gcc main.c</span><span style="color:#e45649;"> -L</span><span> .</span><span style="color:#e45649;"> -l</span><span> stack</span><span style="color:#e45649;"> -I</span><span> stack</span><span style="color:#e45649;"> -o</span><span> main
+</span></code></pre>
+<ul>
+<li>
+<p>查找依赖库</p>
+</li>
+<li>
+<p>查看可执行文件<strong>依赖于</strong>哪些共享库：</p>
+</li>
+</ul>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> ldd main
+</span></code></pre>
+<ul>
+<li>添加自己的共享库到<strong>库搜索列表</strong>中的常用方法：？</li>
+</ul>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>

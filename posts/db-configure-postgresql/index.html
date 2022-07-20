@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<title>配置PostgreSQL - 三维天空</title>
+
+    
+    <link rel="stylesheet" href="/css/simple.min.css">
+    
+    
+<style>
+.toc {
+    margin-bottom: 3rem;
+}
+</style>
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        
+        <nav>
+            
+            <a href="&#x2F;">主页</a>
+            
+            <a href="&#x2F;posts&#x2F;">文章</a>
+            
+            <a href="&#x2F;categories&#x2F;">目录</a>
+            
+            <a href="&#x2F;friends">朋友</a>
+            
+        </nav>
+        
+        
+<h1>配置PostgreSQL</h1>
+
+    </header>
+    
+    <main>
+        
+<article>
+    
+    <em>写于 <time>2022-07-18</time></em>
+    
+    
+    
+    <ul class="toc">
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/db-configure-postgresql/#an-zhuang">安装</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/db-configure-postgresql/#guan-li-yong-hu">管理用户</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/db-configure-postgresql/#chu-shi-hua">初始化</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/db-configure-postgresql/#bu-shu">部署</a>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/db-configure-postgresql/#quan-xian-ce-lue">权限策略</a>
+            
+            <ul>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/db-configure-postgresql/#lian-jie-she-zhi">连接设置</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/db-configure-postgresql/#ke-hu-duan-shou-quan">客户端授权</a>
+                </li>
+                
+                <li>
+                    <a href="https://td-sky.github.io/posts/db-configure-postgresql/#yao-qiu-deng-lu-mi-ma">要求登录密码</a>
+                </li>
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="https://td-sky.github.io/posts/db-configure-postgresql/#can-kao">参考</a>
+            
+        </li>
+        
+    </ul>
+    
+    
+    <p><strong>演示系统</strong>：Archlinux</p>
+<h2 id="an-zhuang">安装</h2>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> sudo pacman</span><span style="color:#e45649;"> -S</span><span> postgresql
+</span></code></pre>
+<h2 id="guan-li-yong-hu">管理用户</h2>
+<p>安装过程会建立名为<strong>postgres</strong>的用户和群组。<sup class="footnote-reference"><a href="#1">1</a></sup></p>
+<p>postgres 的家目录为<code>/var/lib/postgres</code>，安装结束时隶属于<strong>root</strong>，需要改变其所属：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> sudo chown postgres:postgres /var/lib/postgres
+</span></code></pre>
+<p>postgres 默认密码未知，要用超级权限修改：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> sudo passwd postgres
+</span></code></pre>
+<p>尔后，凭此密码可登录 postgres ：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> su</span><span style="color:#e45649;"> -l</span><span> postgres
+</span></code></pre>
+<blockquote>
+<p>小窍门：<strong>强行登录</strong></p>
+<p>若忘记某一用户的密码，可以使用<code>sudo</code>来登录，例如：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> sudo</span><span style="color:#e45649;"> -iu</span><span> postgres
+</span></code></pre>
+</blockquote>
+<h2 id="chu-shi-hua">初始化</h2>
+<p>首先，登入 postgres 。</p>
+<p>在启用 PostgreSQL 之前，必须初始化<strong>数据库簇</strong>：<sup class="footnote-reference"><a href="#2">2</a></sup></p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">[postgres]$</span><span> initdb</span><span style="color:#e45649;"> -D</span><span> /var/lib/postgres/data
+</span></code></pre>
+<h2 id="bu-shu">部署</h2>
+<ul>
+<li>
+<p>启动服务</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> sudo systemctl start postgresql.service
+</span></code></pre>
+</li>
+<li>
+<p>开机自启</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> sudo systemctl enable postgresql.service
+</span></code></pre>
+</li>
+<li>
+<p>查看日志</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> journalctl</span><span style="color:#e45649;"> -xeu</span><span> postgresql.service
+</span></code></pre>
+</li>
+</ul>
+<h2 id="quan-xian-ce-lue">权限策略</h2>
+<p>先给出<strong>重启服务</strong>的命令：</p>
+<pre data-lang="bash" style="background-color:#fafafa;color:#383a42;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#e45649;">$</span><span> sudo systemctl restart postgresql.service
+</span></code></pre>
+<h3 id="lian-jie-she-zhi">连接设置</h3>
+<p>配置文件：<code>/var/lib/postgres/data/postgresql.conf</code></p>
+<p>节：<code>CONNECTIONS AND AUTHENTICATION</code></p>
+<p>段：<code>Connection Settings</code></p>
+<p>默认情况下，服务只监听来自<code>localhost</code>的连接：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>listen_addresses = &#39;localhost&#39;
+</span></code></pre>
+<p><code>listen_addresses</code>乃列表，你可以追加IP地址。<sup class="footnote-reference"><a href="#4">3</a></sup></p>
+<p><code>listen_addresses = '*'</code>意为允许来自任何IP的连接。</p>
+<p>重启服务。</p>
+<h3 id="ke-hu-duan-shou-quan">客户端授权</h3>
+<p>配置文件：<code>/var/lib/postgres/data/pg_hba.conf</code></p>
+<p><code>pg_hba.conf</code>管理着不同来源用户的权限。</p>
+<p>默认情况下，任何<strong>系统用户</strong>都能作为任意<strong>数据库用户</strong>登录，由该段决定：<sup class="footnote-reference"><a href="#3">4</a></sup></p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span># TYPE  DATABASE        USER            ADDRESS                 METHOD
+</span><span>
+</span><span># &quot;local&quot; is for Unix domain socket connections only
+</span><span>local   all             all                                     trust
+</span></code></pre>
+<p>重启服务。</p>
+<h3 id="yao-qiu-deng-lu-mi-ma">要求登录密码</h3>
+<p>你需要依次修改<code>pg_hba.conf</code>和<code>postgresql.conf</code>。<sup class="footnote-reference"><a href="#5">5</a></sup></p>
+<p>首先编辑<code>pg_hba.conf</code>，设置<code>METHOD</code>字段为<code>scram-sha-256</code>：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span># TYPE  DATABASE        USER            ADDRESS                 METHOD
+</span><span>
+</span><span># &quot;local&quot; is for Unix domain socket connections only
+</span><span>local   all             all                                     scram-sha-256
+</span></code></pre>
+<p>然后编辑<code>postgresql.conf</code>，在<code>CONNECTIONS AND AUTHENTICATION</code>节<code>Authentication</code>段：</p>
+<pre style="background-color:#fafafa;color:#383a42;"><code><span>password_encryption = scram-sha-256
+</span></code></pre>
+<p>重启服务。</p>
+<p>运行此 SQL 为用户设置密码：</p>
+<pre data-lang="sql" style="background-color:#fafafa;color:#383a42;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="color:#a626a4;">alter user &lt;</span><span>用户</span><span style="color:#a626a4;">&gt; with</span><span> encrypted password </span><span style="color:#50a14f;">&#39;密码&#39;</span><span>;
+</span></code></pre>
+<h2 id="can-kao">参考</h2>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>https://wiki.archlinux.org/title/PostgreSQL#Installation</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>https://wiki.archlinux.org/title/PostgreSQL#Initial_configuration</p>
+</div>
+<div class="footnote-definition" id="3"><sup class="footnote-definition-label">4</sup>
+<p>https://wiki.archlinux.org/title/PostgreSQL#Restricts_access_rights_to_the_database_superuser_by_default</p>
+</div>
+<div class="footnote-definition" id="4"><sup class="footnote-definition-label">3</sup>
+<p>https://wiki.archlinux.org/title/PostgreSQL#Configure_PostgreSQL_to_be_accessible_from_remote_hosts</p>
+</div>
+<div class="footnote-definition" id="5"><sup class="footnote-definition-label">5</sup>
+<p>https://wiki.archlinux.org/title/PostgreSQL#Require_password_for_login</p>
+</div>
+
+</article>
+
+    </main>
+    
+    <footer>
+        
+        &copy; 2022 三维天空
+        
+        
+        · Powered by <a href="https://www.getzola.org/">Zola</a> and <a href="https://github.com/tarunjana/simplify/">Simplify</a>
+        
+    </footer>
+</body>
+
+</html>
