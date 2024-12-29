@@ -11,15 +11,13 @@ tags:
 
 - 功能：把**汇编代码(.s)**翻译成**编译单元(.o)**。
 
-- 示意：`assembly.s`  -->  `object.o`
+- 示意：`assembly.s` --> `object.o`
 
 - 使用：
 
 ```bash
 $ as assembly.s -o object.o
 ```
-
-
 
 ## objdump
 

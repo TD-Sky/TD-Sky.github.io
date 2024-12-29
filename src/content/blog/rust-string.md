@@ -13,8 +13,6 @@ tags:
 - 为使用字符串，必须知道其**字节序列**在内存上的开始和结束位置。
 - 编程语言围绕字符串构建了各种数据结构，用于存储或获取字符串的某些属性，并添加额外功能以方便地操作字符串。
 
-
-
 ## C如何使用字符串
 
 **C不规定字符串编码**。C通过**字符指针**使用字符串，其置`\0`于字符串末尾以示终止。
@@ -32,15 +30,11 @@ const char* string_literal = "banana";
 char* heap_string = (char*) malloc(7*sizeof(char));
 ```
 
-
-
 ## 指针和引用
 
 **指针**类型实质为`usize`，因市面上64位处理器居多，故其常占**8字节**。
 
 **切片引用**具备**地址**和**长度**两道信息，占**16字节**。而普通引用仅表示有效地址，占**8字节**。
-
-
 
 ## Rust如何使用字符串
 
@@ -60,9 +54,6 @@ char* heap_string = (char*) malloc(7*sizeof(char));
 
 - `CString`
 
-
-
 > 参考文章
 >
 > [Ali Somay - Strings in Rust](https://medium.com/@alisomay/strings-in-rust-28c08a2d3130)
-

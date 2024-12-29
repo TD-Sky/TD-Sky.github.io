@@ -16,8 +16,6 @@ tags:
 $ sudo pacman -S postgresql
 ```
 
-
-
 ## 管理用户
 
 安装过程会建立名为**postgres**的用户和群组。[^1]
@@ -48,8 +46,6 @@ $ su -l postgres
 > $ sudo -iu postgres
 > ```
 
-
-
 ## 初始化
 
 首先，登入 postgres 。
@@ -60,29 +56,25 @@ $ su -l postgres
 [postgres]$ initdb -D /var/lib/postgres/data
 ```
 
-
-
 ## 部署
 
 - 启动服务
 
-    ```bash
-    $ sudo systemctl start postgresql.service
-    ```
+  ```bash
+  $ sudo systemctl start postgresql.service
+  ```
 
 - 开机自启
 
-    ```bash
-    $ sudo systemctl enable postgresql.service
-    ```
+  ```bash
+  $ sudo systemctl enable postgresql.service
+  ```
 
 - 查看日志
 
-    ```bash
-    $ journalctl -xeu postgresql.service
-    ```
-
-
+  ```bash
+  $ journalctl -xeu postgresql.service
+  ```
 
 ## 权限策略
 
@@ -91,7 +83,6 @@ $ su -l postgres
 ```bash
 $ sudo systemctl restart postgresql.service
 ```
-
 
 ### 连接设置
 
@@ -113,7 +104,6 @@ listen_addresses = 'localhost'
 
 重启服务。
 
-
 ### 客户端授权
 
 配置文件：`/var/lib/postgres/data/pg_hba.conf`
@@ -130,7 +120,6 @@ local   all             all                                     trust
 ```
 
 重启服务。
-
 
 ### 要求登录密码
 
@@ -159,16 +148,14 @@ password_encryption = scram-sha-256
 alter user <用户> with encrypted password '密码';
 ```
 
-
-
 ## 参考
 
-[^1]:https://wiki.archlinux.org/title/PostgreSQL#Installation
+[^1]: https://wiki.archlinux.org/title/PostgreSQL#Installation
 
-[^2]:https://wiki.archlinux.org/title/PostgreSQL#Initial_configuration
+[^2]: https://wiki.archlinux.org/title/PostgreSQL#Initial_configuration
 
-[^3]:https://wiki.archlinux.org/title/PostgreSQL#Restricts_access_rights_to_the_database_superuser_by_default
+[^3]: https://wiki.archlinux.org/title/PostgreSQL#Restricts_access_rights_to_the_database_superuser_by_default
 
-[^4]:https://wiki.archlinux.org/title/PostgreSQL#Configure_PostgreSQL_to_be_accessible_from_remote_hosts
+[^4]: https://wiki.archlinux.org/title/PostgreSQL#Configure_PostgreSQL_to_be_accessible_from_remote_hosts
 
-[^5]:https://wiki.archlinux.org/title/PostgreSQL#Require_password_for_login
+[^5]: https://wiki.archlinux.org/title/PostgreSQL#Require_password_for_login

@@ -19,8 +19,6 @@ tags:
 - 硬件：计算机。你要知悉其运作。
 - 软件：指示计算机工作的程序。
 
-
-
 ## 重要思想
 
 ### 万能计算设备
@@ -42,7 +40,7 @@ tags:
 程序的成功执行，经历了层层转换。
 
 | 从语言到电子 |
-|:------------:|
+| :----------: |
 |     问题     |
 |     算法     |
 |     语言     |
@@ -58,9 +56,10 @@ tags:
 3. 语言：编程语言，汇编语言。一门高级语言编译到不同ISA，需要不同编译器。汇编语言由汇编器翻译成**ISA**。
 
 4. 机器架构
-  - 指令集架构：**ISA is the complete specification of the interface between programs that have been written and the underlying computer hardware that must carry out the work of those programs.**
-  - 操作码：表示指令要做什么。
-  - 操作对象：指令所操作的数据。ISA制订了**数据类型**，用于指定对数据的操作。
-  - 寻址模式：执行指令时，知道数据来源。
+
+- 指令集架构：**ISA is the complete specification of the interface between programs that have been written and the underlying computer hardware that must carry out the work of those programs.**
+- 操作码：表示指令要做什么。
+- 操作对象：指令所操作的数据。ISA制订了**数据类型**，用于指定对数据的操作。
+- 寻址模式：执行指令时，知道数据来源。
 
 5. 微架构：系ISA的具体实现。设计者可自由取舍各种特性，设计一款处理器。例如，x86指令集架构就有8086、80286、80386、80486等微架构。

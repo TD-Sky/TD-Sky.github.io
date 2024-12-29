@@ -11,7 +11,7 @@ tags:
 
 - 功能：链接**编译单元(.o)**，生成**可执行文件**。
 
-- 示意：`object_1.o  object_2.o  ......`  -->  `program`
+- 示意：`object_1.o  object_2.o  ......` --> `program`
 
 - 使用：
 
@@ -31,8 +31,6 @@ $ ld /usr/lib/crt1.o /usr/lib/crti.o main.o -lc -dynamic-linker /lib/ld-linux.so
 1. `crt1.o`内提供了`_start`入口点，它会调用`main`函数。
 2. `-lc`表示需要链接`libc`库。
 3. `-dynamic-linker`指定动态链接器`/lib/ld-linux.so.2`
-
-
 
 ## 静态链接
 
@@ -63,8 +61,6 @@ $ gcc main.c -L . -l stack -I stack -o main
 3. 编译器优先查找库名共享库`libstack.so`，然后再查找静态库`libstack.a`。如果只需链接静态库，则使用选项`static`。
 
 - 为什么要用静态库？**链接器可以只取静态库中需要部分来链接**。
-
-
 
 ## 动态链接
 
