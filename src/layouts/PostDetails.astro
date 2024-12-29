@@ -8,6 +8,7 @@ import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
+import Category from "@components/Category.astro";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -25,6 +26,7 @@ const {
   pubDatetime,
   modDatetime,
   tags,
+  category,
   editPost,
 } = post.data;
 
@@ -77,6 +79,9 @@ const nextPost =
     </button>
   </div>
   <main id="main-content">
+    <div class="flex justify-end">
+      <Category {category} />
+    </div>
     <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
     <Datetime
       pubDatetime={pubDatetime}
@@ -91,7 +96,7 @@ const nextPost =
     </article>
 
     <ul class="my-8">
-      {tags.map(tag => <Tag tag={slugifyStr(tag)} />)}
+      {tags.map(tag => <Tag {tag} />)}
     </ul>
 
     <div

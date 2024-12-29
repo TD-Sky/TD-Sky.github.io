@@ -1,0 +1,30 @@
+---
+import { getCollection } from "astro:content";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import Category from "@components/Category.astro";
+import { SITE } from "@config";
+import getUniqueCategories from "@utils/getCategories";
+
+const posts = await getCollection("blog");
+
+let categories = getUniqueCategories(posts);
+---
+
+<Layout title={`Categroies | ${SITE.title}`}>
+  <Header activeNav="categories" />
+  <Main pageTitle="Categroies" pageDesc="All the categories of posts.">
+    <ul>
+      {
+        categories.map(({ categoryName }) => (
+          <li class="mx-1 my-6 underline-offset-8">
+            <Category category={categoryName} size="lg" />
+          </li>
+        ))
+      }
+    </ul>
+  </Main>
+  <Footer />
+</Layout>
