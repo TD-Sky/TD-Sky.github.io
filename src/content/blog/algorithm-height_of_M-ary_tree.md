@@ -32,7 +32,7 @@ M叉平衡树之高贯穿算法分析。正因其精妙的性质，算法复杂�
   设**T**为满足归纳假设的树，则**T**的叶子通常也是其子树的叶子，而子树通过分别删减它们的根与**T**根之间的边产生。
 
   <img
-        src="/inductive_step.png"
+        src="/assets/inductive_step.png"
         alt="归纳步骤"
         align="middle"
     />

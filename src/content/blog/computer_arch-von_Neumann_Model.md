@@ -120,7 +120,7 @@ PC的输入来源是PCMUX。PCMUX是一种 _3入1出_ 的元件，输入分别�
 MARMUX控制MAR的输入源。MARMUX是一种 _2入1出_ 的元件，输入分别来自陷阱矢量和寻址模式，输出流向全局总线。
 
 <img
-    src="/LC-3_data_path.png"
+    src="/assets/LC-3_data_path.png"
     alt="LC-3的数据路径"
     align="middle"
 />

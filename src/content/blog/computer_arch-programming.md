@@ -34,7 +34,7 @@ tags:
 #### 顺序
 
 <img
-    src="/sequential.png"
+    src="/assets/sequential.png"
     alt="顺序指令框图"
     align="middle"
 />
@@ -44,7 +44,7 @@ tags:
 #### 条件
 
 <img
-    src="/conditonal.png"
+    src="/assets/conditonal.png"
     alt="条件指令框图"
     align="middle"
 />
@@ -54,7 +54,7 @@ tags:
 #### 迭代
 
 <img
-    src="/iterative.png"
+    src="/assets/iterative.png"
     alt="迭代指令框图"
     align="middle"
 />
