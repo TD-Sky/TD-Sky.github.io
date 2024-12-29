@@ -1,4 +1,4 @@
-import { LOCALE, SITE } from "@config";
+import { SITE } from "@config";
 import type { CollectionEntry } from "astro:content";
 
 interface DatetimesProps {
@@ -61,20 +61,14 @@ const FormattedDatetime = ({ pubDatetime, modDatetime }: DatetimesProps) => {
     modDatetime && modDatetime > pubDatetime ? modDatetime : pubDatetime
   );
 
-  const date = myDatetime.toLocaleDateString(LOCALE.langTag, {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-
-  const time = myDatetime.toLocaleTimeString(LOCALE.langTag, {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const dateTimeStr = myDatetime.toISOString();
+  const i = dateTimeStr.indexOf("T");
+  const date = dateTimeStr.substring(0, i);
+  const time = dateTimeStr.substring(i + 1, dateTimeStr.indexOf("."));
 
   return (
     <>
-      <time dateTime={myDatetime.toISOString()}>{date}</time>
+      <time dateTime={dateTimeStr}>{date}</time>
       <span aria-hidden="true"> | </span>
       <span className="sr-only">&nbsp;at&nbsp;</span>
       <span className="text-nowrap">{time}</span>
