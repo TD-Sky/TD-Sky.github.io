@@ -13,9 +13,9 @@ const posts = await getCollection("blog");
 let categories = getUniqueCategories(posts);
 ---
 
-<Layout title={`Categroies | ${SITE.title}`}>
+<Layout title={`Categories | ${SITE.title}`}>
   <Header activeNav="categories" />
-  <Main pageTitle="Categroies" pageDesc="All the categories of posts.">
+  <Main pageTitle="Categories" pageDesc="All the categories of posts.">
     <ul>
       {
         categories.map(({ categoryName }) => (
